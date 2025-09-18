@@ -110,7 +110,7 @@
             text-align: center;
             box-shadow: 0 0 15px rgba(0,255,128,0.4);
         }
-        .case-item img, .shop-item img {
+        .case-item img, .shop-item img, .inventory-item img {
             width: 100%;
             height: auto;
             border-radius: 8px;
@@ -150,9 +150,10 @@
     <div id="steam-link-overlay" class="overlay">
         <div class="modal">
             <p>You must link your Steam account to access BM CS.</p>
-            <p>Click below to login via Steam. (Simulated - In real, redirect to Steam OpenID)</p>
+            <p>Enter your SteamID64 to link (e.g., 76561197960287930):</p>
+            <input type="text" id="steam-id-input" placeholder="SteamID64">
             <button id="link-steam-btn">Link Steam Account</button>
-            <p>Note: This requires server-side integration for real linking.</p>
+            <p>Note: This uses Steam API to fetch your info. For real auth, use OpenID (requires server).</p>
         </div>
     </div>
 
@@ -164,6 +165,8 @@
             <a href="#shop" onclick="showSection('shop')">Shop</a>
             <a href="#upgrade" onclick="showSection('upgrade')">Upgrade</a>
             <a href="#affiliates" onclick="showSection('affiliates')">Affiliates</a>
+            <a href="#inventory" onclick="showSection('inventory')">Inventory</a>
+            <a href="#account" onclick="showSection('account')">Account</a>
         </nav>
         <div class="user-info">
             <img id="user-avatar" src="https://via.placeholder.com/40?text=?" alt="Avatar">
@@ -182,13 +185,13 @@
                 <p>Cost: 0.99 USD</p>
                 <button class="btn" onclick="openCase('low')">Open Case</button>
             </div>
-            <!-- Add more cases -->
             <div class="case-item">
                 <img src="https://via.placeholder.com/200x300?text=Mid+Case" alt="Mid Case">
                 <h3>Mid Case</h3>
                 <p>Cost: 4.99 USD</p>
                 <button class="btn" onclick="openCase('mid')">Open Case</button>
             </div>
+            <!-- Add more -->
         </div>
     </section>
 
@@ -198,9 +201,9 @@
         <div class="battles-list">
             <div class="battle-item">
                 <span>Battle #123 - 2 Players - Pot: 50 USD</span>
-                <button class="btn">Join</button>
+                <button class="btn" onclick="joinBattle(123)">Join</button>
             </div>
-            <!-- Add more dynamic battles -->
+            <!-- Add more -->
         </div>
     </section>
 
@@ -208,33 +211,164 @@
         <h2>Shop</h2>
         <div class="shop-grid">
             <div class="shop-item">
-                <img src="https://via.placeholder.com/200?text=AK-47" alt="AK-47 Skin">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_full_throttle_light_large.1f1f1f1f.png" alt="M4A4 | Full Throttle" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>M4A4 | Full Throttle</h3>
+                <p>Price: 5.00 USD</p>
+                <button class="btn" onclick="buyItem({'name':'M4A4 | Full Throttle', 'price':5.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_full_throttle_light_large.1f1f1f1f.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_the_oligarch_light_large.2f2f2f2f.png" alt="AK-47 | The Oligarch" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>AK-47 | The Oligarch</h3>
+                <p>Price: 10.00 USD</p>
+                <button class="btn" onclick="buyItem({'name':'AK-47 | The Oligarch', 'price':10.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_the_oligarch_light_large.2f2f2f2f.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_liquidation_light_large.3f3f3f3f.png" alt="M4A1-S | Liquidation" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>M4A1-S | Liquidation</h3>
+                <p>Price: 15.00 USD</p>
+                <button class="btn" onclick="buyItem({'name':'M4A1-S | Liquidation', 'price':15.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_liquidation_light_large.3f3f3f3f.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_aug_cu_aug_trigger_discipline_light_large.4f4f4f4f.png" alt="AUG | Trigger Discipline" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>AUG | Trigger Discipline</h3>
+                <p>Price: 20.00 USD</p>
+                <button class="btn" onclick="buyItem({'name':'AUG | Trigger Discipline', 'price':20.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_aug_cu_aug_trigger_discipline_light_large.4f4f4f4f.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_eye_of_horus_light_large.5f5f5f5f.png" alt="M4A4 | Eye of Horus" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>M4A4 | Eye of Horus</h3>
+                <p>Price: 134.85 USD</p>
+                <button class="btn" onclick="buyItem({'name':'M4A4 | Eye of Horus', 'price':134.85, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_eye_of_horus_light_large.5f5f5f5f.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_inheritance_light_large.6f6f6f6f.png" alt="AK-47 | Inheritance" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>AK-47 | Inheritance</h3>
+                <p>Price: 51.49 USD</p>
+                <button class="btn" onclick="buyItem({'name':'AK-47 | Inheritance', 'price':51.49, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_inheritance_light_large.6f6f6f6f.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_famas_cu_famas_waters_of_nephthys_light_large.7f7f7f7f.png" alt="FAMAS | Waters of Nephthys" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>FAMAS | Waters of Nephthys</h3>
+                <p>Price: 32.37 USD</p>
+                <button class="btn" onclick="buyItem({'name':'FAMAS | Waters of Nephthys', 'price':32.37, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_famas_cu_famas_waters_of_nephthys_light_large.7f7f7f7f.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_printstream_light_large.8f8f8f8f.png" alt="M4A1-S | Printstream" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>M4A1-S | Printstream</h3>
+                <p>Price: 193.51 USD</p>
+                <button class="btn" onclick="buyItem({'name':'M4A1-S | Printstream', 'price':193.51, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_printstream_light_large.8f8f8f8f.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_leet_museo_light_large.9f9f9f9f.png" alt="AK-47 | Leet Museo" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>AK-47 | Leet Museo</h3>
+                <p>Price: 42.00 USD</p>
+                <button class="btn" onclick="buyItem({'name':'AK-47 | Leet Museo', 'price':42.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_leet_museo_light_large.9f9f9f9f.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_temukau_light_large.0f0f0f0f.png" alt="M4A4 | Temukau" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>M4A4 | Temukau</h3>
+                <p>Price: 5.46 USD</p>
+                <button class="btn" onclick="buyItem({'name':'M4A4 | Temukau', 'price':5.46, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_temukau_light_large.0f0f0f0f.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_panthera_onca_light_large.1e1e1e1e.png" alt="AK-47 | Panthera Onca" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>AK-47 | Panthera Onca</h3>
+                <p>Price: 148.08 USD</p>
+                <button class="btn" onclick="buyItem({'name':'AK-47 | Panthera Onca', 'price':148.08, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_panthera_onca_light_large.1e1e1e1e.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_blue_phosphor_light_large.2e2e2e2e.png" alt="M4A1-S | Blue Phosphor" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>M4A1-S | Blue Phosphor</h3>
+                <p>Price: 975.45 USD</p>
+                <button class="btn" onclick="buyItem({'name':'M4A1-S | Blue Phosphor', 'price':975.45, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_blue_phosphor_light_large.2e2e2e2e.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_black_lotus_light_large.3e3e3e3e.png" alt="M4A1-S | Black Lotus" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>M4A1-S | Black Lotus</h3>
+                <p>Price: 7.84 USD</p>
+                <button class="btn" onclick="buyItem({'name':'M4A1-S | Black Lotus', 'price':7.84, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_black_lotus_light_large.3e3e3e3e.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_xray_light_large.4e4e4e4e.png" alt="AK-47 | X-Ray" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>AK-47 | X-Ray</h3>
+                <p>Price: 367.61 USD</p>
+                <button class="btn" onclick="buyItem({'name':'AK-47 | X-Ray', 'price':367.61, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_xray_light_large.4e4e4e4e.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_wild_lotus_light_large.5e5e5e5e.png" alt="AK-47 | Wild Lotus" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>AK-47 | Wild Lotus</h3>
+                <p>Price: 3899.00 USD</p>
+                <button class="btn" onclick="buyItem({'name':'AK-47 | Wild Lotus', 'price':3899.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_wild_lotus_light_large.5e5e5e5e.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_head_shot_light_large.6e6e6e6e.png" alt="AK-47 | Head Shot" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>AK-47 | Head Shot</h3>
+                <p>Price: 3.89 USD</p>
+                <button class="btn" onclick="buyItem({'name':'AK-47 | Head Shot', 'price':3.89, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_head_shot_light_large.6e6e6e6e.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_player_two_light_large.7e7e7e7e.png" alt="M4A1-S | Player Two" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>M4A1-S | Player Two</h3>
+                <p>Price: 15.00 USD</p>
+                <button class="btn" onclick="buyItem({'name':'M4A1-S | Player Two', 'price':15.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_player_two_light_large.7e7e7e7e.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_vulcan_light_large.8e8e8e8e.png" alt="AK-47 | Vulcan" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>AK-47 | Vulcan</h3>
+                <p>Price: 200.00 USD</p>
+                <button class="btn" onclick="buyItem({'name':'AK-47 | Vulcan', 'price':200.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_vulcan_light_large.8e8e8e8e.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_redline_light_large.9e9e9e9e.png" alt="AK-47 | Redline" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
                 <h3>AK-47 | Redline</h3>
                 <p>Price: 10.00 USD</p>
-                <button class="btn" onclick="buyItem('ak47')">Buy</button>
+                <button class="btn" onclick="buyItem({'name':'AK-47 | Redline', 'price':10.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_redline_light_large.9e9e9e9e.png'})">Buy</button>
             </div>
-            <!-- Add more items -->
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_asiimov_light_large.0e0e0e0e.png" alt="M4A4 | Asiimov" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>M4A4 | Asiimov</h3>
+                <p>Price: 100.00 USD</p>
+                <button class="btn" onclick="buyItem({'name':'M4A4 | Asiimov', 'price':100.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_asiimov_light_large.0e0e0e0e.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_awp_cu_awp_dragon_lore_light_large.1d1d1d1d.png" alt="AWP | Dragon Lore" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>AWP | Dragon Lore</h3>
+                <p>Price: 5000.00 USD</p>
+                <button class="btn" onclick="buyItem({'name':'AWP | Dragon Lore', 'price':5000.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_awp_cu_awp_dragon_lore_light_large.1d1d1d1d.png'})">Buy</button>
+            </div>
+            <div class="shop-item">
+                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_howl_light_large.2d2d2d2d.png" alt="M4A4 | Howl" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
+                <h3>M4A4 | Howl</h3>
+                <p>Price: 3000.00 USD</p>
+                <button class="btn" onclick="buyItem({'name':'M4A4 | Howl', 'price':3000.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_howl_light_large.2d2d2d2d.png'})">Buy</button>
+            </div>
+            <!-- Added more items with guessed image URLs based on pattern -->
         </div>
     </section>
 
     <section id="upgrade" class="section">
         <h2>Upgrade</h2>
         <p>Upgrade your skins here.</p>
-        <!-- Add upgrade mechanics -->
+        <!-- Add upgrade features -->
     </section>
 
     <section id="affiliates" class="section">
         <h2>Affiliates</h2>
         <p>Refer friends and earn rewards.</p>
-        <!-- Add affiliate system -->
+        <!-- Add affiliate features -->
     </section>
 
-    <section id="profile" class="section">
-        <h2>Profile</h2>
-        <p>Steam ID: <span id="steam-id"></span></p>
-        <p>Level: 1</p>
-        <p>Inventory Value: 0 USD</p>
-        <!-- More user info -->
+    <section id="inventory" class="section">
+        <h2>Inventory</h2>
+        <div id="inventory-grid" class="inventory-grid"></div>
+        <button class="btn" id="withdraw-btn" disabled>Withdraw and Transfer to Account</button>
+    </section>
+
+    <section id="account" class="section">
+        <h2>Account</h2>
+        <p>Steam Username: <span id="steam-username">Not Linked</span></p>
+        <p>Steam Avatar: <img id="steam-avatar" src="" alt="Avatar" style="width:100px; border-radius:50%;"></p>
+        <p>Steam Profile URL: <span id="steam-profile"></span></p>
     </section>
 
     <div id="deposit-modal" style="display:none;" class="overlay">
@@ -251,17 +385,26 @@
             <h3>You Won!</h3>
             <p id="win-skin"></p>
             <button class="btn" onclick="sellWin()">Sell</button>
-            <button class="btn" onclick="addToInventoryWin()">Inventory</button>
+            <button class="btn" onclick="addToInventoryWin()">Add to Inventory</button>
             <button class="btn" onclick="closeWinModal()">Close</button>
         </div>
     </div>
 
+    <div id="withdraw-modal" style="display:none;" class="overlay">
+        <div class="modal">
+            <p>Message support for transfer (time: 1 hour to 1 day)</p>
+            <p>Your random code: <span id="random-code"></span></p>
+            <button class="btn" onclick="closeWithdrawModal()">Close</button>
+        </div>
+    </div>
+
     <script>
+        const STEAM_API_KEY = 'DCC2C2C5C66A1BFD9F141D31663AD1D1';
+        const TRADE_LINK = 'https://steamcommunity.com/tradeoffer/new/?partner=1445094693&token=CI12hRuH';
         let linkedSteam = localStorage.getItem('linkedSteam') === 'true' || false;
         let walletBalance = parseFloat(localStorage.getItem('walletBalance')) || 0;
         let inventory = JSON.parse(localStorage.getItem('inventory')) || [];
-        let userName = localStorage.getItem('userName') || 'Guest';
-        let userAvatar = localStorage.getItem('userAvatar') || 'https://via.placeholder.com/40?text=?';
+        let steamInfo = JSON.parse(localStorage.getItem('steamInfo')) || { username: 'Guest', avatar: 'https://via.placeholder.com/40?text=?', profile: '' };
 
         if (!linkedSteam) {
             document.getElementById('steam-link-overlay').style.display = 'flex';
@@ -269,25 +412,35 @@
             updateUserInfo();
         }
 
+        document.getElementById('wallet-balance').innerText = walletBalance.toFixed(2);
+
         document.getElementById('link-steam-btn').addEventListener('click', () => {
-            // Simulate real Steam link: In production, redirect to Steam OpenID endpoint
-            // e.g., window.location.href = 'https://steamcommunity.com/openid/login?params...';
-            // For demo, simulate success after delay
-            setTimeout(() => {
-                linkedSteam = true;
-                localStorage.setItem('linkedSteam', 'true');
-                userName = 'LinkedUser';
-                userAvatar = 'https://via.placeholder.com/40?text=U';
-                localStorage.setItem('userName', userName);
-                localStorage.setItem('userAvatar', userAvatar);
-                document.getElementById('steam-link-overlay').style.display = 'none';
-                updateUserInfo();
-            }, 2000); // Simulate linking time
+            const steamId = document.getElementById('steam-id-input').value;
+            if (!steamId) return alert('Enter SteamID64!');
+            fetch(`https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${STEAM_API_KEY}&steamids=${steamId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const player = data.response.players[0];
+                    if (player) {
+                        linkedSteam = true;
+                        localStorage.setItem('linkedSteam', 'true');
+                        steamInfo = { username: player.personaname, avatar: player.avatarfull, profile: player.profileurl };
+                        localStorage.setItem('steamInfo', JSON.stringify(steamInfo));
+                        document.getElementById('steam-link-overlay').style.display = 'none';
+                        updateUserInfo();
+                        document.getElementById('steam-username').innerText = steamInfo.username;
+                        document.getElementById('steam-avatar').src = steamInfo.avatar;
+                        document.getElementById('steam-profile').innerText = steamInfo.profile;
+                    } else {
+                        alert('Invalid SteamID!');
+                    }
+                })
+                .catch(error => alert('Error fetching Steam info: ' + error + ' (CORS or API issue; use server for production)'));
         });
 
         function updateUserInfo() {
-            document.getElementById('user-name').innerText = userName;
-            document.getElementById('user-avatar').src = userAvatar;
+            document.getElementById('user-name').innerText = steamInfo.username;
+            document.getElementById('user-avatar').src = steamInfo.avatar;
             document.getElementById('wallet-balance').innerText = walletBalance.toFixed(2);
         }
 
@@ -298,6 +451,7 @@
             }
             document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
             document.getElementById(sectionId).style.display = 'block';
+            if (sectionId === 'inventory') loadInventory();
         }
 
         function showDepositModal() {
@@ -318,7 +472,6 @@
             if (walletBalance < cost) return alert('Insufficient balance!');
             walletBalance -= cost;
             updateWallet();
-            // Simulate opening
             setTimeout(() => {
                 const skins = casePools[caseType];
                 const randomIndex = Math.floor(Math.random() * skins.length);
@@ -329,15 +482,16 @@
         }
 
         function sellWin() {
-            const value = parseFloat(document.getElementById('win-skin').innerText.match(/\d+/)[0]);
+            const value = parseFloat(document.getElementById('win-skin').innerText.match(/\$(\d+\.?\d*)/)[1]);
             walletBalance += value;
             updateWallet();
             closeWinModal();
         }
 
         function addToInventoryWin() {
-            const skin = document.getElementById('win-skin').innerText;
-            inventory.push(skin);
+            const skinName = document.getElementById('win-skin').innerText.split(' (')[0];
+            const skinValue = parseFloat(document.getElementById('win-skin').innerText.match(/\$(\d+\.?\d*)/)[1]);
+            inventory.push({name: skinName, price: skinValue, img: 'https://via.placeholder.com/200?text=Won+Skin'});
             localStorage.setItem('inventory', JSON.stringify(inventory));
             closeWinModal();
         }
@@ -348,12 +502,41 @@
 
         function createBattle() {
             alert('Battle created! (Simulated)');
-            // Add to battles list
+        }
+
+        function joinBattle(id) {
+            alert(`Joined battle #${id}! (Simulated)`);
         }
 
         function buyItem(item) {
-            alert(`Bought ${item}! (Simulated)`);
-            // Deduct balance, add to inventory
+            if (walletBalance < item.price) return alert('Insufficient balance!');
+            walletBalance -= item.price;
+            updateWallet();
+            inventory.push(item);
+            localStorage.setItem('inventory', JSON.stringify(inventory));
+            alert(`Bought ${item.name}! Added to inventory.`);
+        }
+
+        function loadInventory() {
+            const container = document.getElementById('inventory-grid');
+            container.innerHTML = '';
+            inventory.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'inventory-item';
+                div.innerHTML = `<img src="${item.img}" alt="${item.name}"><h3>${item.name}</h3><p>$${item.price.toFixed(2)}</p>`;
+                container.appendChild(div);
+            });
+            document.getElementById('withdraw-btn').disabled = walletBalance < 30;
+        }
+
+        document.getElementById('withdraw-btn').addEventListener('click', () => {
+            const code = Math.random().toString(36).substring(2, 10).toUpperCase();
+            document.getElementById('random-code').innerText = code;
+            document.getElementById('withdraw-modal').style.display = 'flex';
+        });
+
+        function closeWithdrawModal() {
+            document.getElementById('withdraw-modal').style.display = 'none';
         }
 
         function updateWallet() {
