@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BM CS - Ultimate Gaming Platform</title>
+    <title>BM CS - CS:GO Skins Platform</title>
     <style>
         body {
             background-color: #0a0a0a;
@@ -46,12 +46,21 @@
         .modal button:hover, .btn:hover {
             transform: scale(1.05);
         }
-        nav {
+        header {
             background: #222;
             padding: 15px;
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
+            align-items: center;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ff7f;
+        }
+        nav {
+            display: flex;
         }
         nav a {
             color: #fff;
@@ -62,6 +71,19 @@
         }
         nav a:hover {
             background: #333;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .user-info span {
+            margin-right: 20px;
         }
         .section {
             display: none;
@@ -75,59 +97,36 @@
         #home {
             display: block;
             text-align: center;
-            background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"%3E%3Cpath fill="%2300ff7f" fill-opacity="0.2" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,176C1248,192,1344,192,1392,192L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"%3E%3C/path%3E%3C/svg%3E') no-repeat bottom;
         }
-        .reel-container {
-            display: flex;
-            justify-content: space-around;
-            margin: 30px 0;
+        .cases-grid, .shop-grid, .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
         }
-        .reel {
-            width: 180px;
-            height: 240px;
+        .case-item, .shop-item, .inventory-item {
             background: #282828;
-            border: 3px solid #00ff7f;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0,255,128,0.4);
+        }
+        .case-item img, .shop-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .battles-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .battle-item {
+            background: #333;
+            padding: 20px;
             border-radius: 12px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            overflow: hidden;
-            position: relative;
-        }
-        .reel::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0,255,128,0.3), transparent);
-            animation: rotate 10s linear infinite;
-        }
-        @keyframes rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .spin-btn {
-            background: linear-gradient(45deg, #ff4500, #ff1493);
-            margin: 10px;
-        }
-        .inventory-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-        }
-        .inventory-item {
-            background: #333;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 0 10px rgba(0,255,128,0.4);
-        }
-        #support-section a {
-            color: #00ff7f;
-            font-size: 18px;
         }
         .gaming-bg {
             position: fixed;
@@ -150,230 +149,211 @@
     <div class="gaming-bg"></div>
     <div id="steam-link-overlay" class="overlay">
         <div class="modal">
-            <p>Welcome to BM CS! First, link your Steam account to proceed.</p>
-            <button id="link-steam-btn">Link Steam</button>
+            <p>You must link your Steam account to access BM CS.</p>
+            <p>Click below to login via Steam. (Simulated - In real, redirect to Steam OpenID)</p>
+            <button id="link-steam-btn">Link Steam Account</button>
+            <p>Note: This requires server-side integration for real linking.</p>
         </div>
     </div>
 
-    <nav>
-        <a href="#home" onclick="showSection('home')">Home</a>
-        <a href="#wallet" onclick="showSection('wallet')">Wallet</a>
-        <a href="#shop" onclick="showSection('shop')">Shop</a>
-        <a href="#skin-battle" onclick="showSection('skin-battle')">Skin Battle</a>
-        <a href="#career" onclick="showSection('career')">Career</a>
-        <a href="#account" onclick="showSection('account')">Account</a>
-        <a href="#inventory" onclick="showSection('inventory')">Inventory</a>
-        <a href="#support" onclick="showSection('support')">Support</a>
-    </nav>
+    <header>
+        <div class="logo">BM CS</div>
+        <nav>
+            <a href="#cases" onclick="showSection('cases')">Cases</a>
+            <a href="#battles" onclick="showSection('battles')">Battles</a>
+            <a href="#shop" onclick="showSection('shop')">Shop</a>
+            <a href="#upgrade" onclick="showSection('upgrade')">Upgrade</a>
+            <a href="#affiliates" onclick="showSection('affiliates')">Affiliates</a>
+        </nav>
+        <div class="user-info">
+            <img id="user-avatar" src="https://via.placeholder.com/40?text=?" alt="Avatar">
+            <span id="user-name">Guest</span>
+            <span>Balance: <span id="wallet-balance">0.00</span> USD</span>
+            <button class="btn" onclick="showDepositModal()">Deposit</button>
+        </div>
+    </header>
 
-    <section id="home" class="section">
-        <h1>BM CS - Your Ultimate CS2 Gaming Hub</h1>
-        <p>Dive into skins, battles, and more!</p>
+    <section id="cases" class="section">
+        <h2>Cases</h2>
+        <div class="cases-grid">
+            <div class="case-item">
+                <img src="https://via.placeholder.com/200x300?text=Low+Case" alt="Low Case">
+                <h3>Low Case</h3>
+                <p>Cost: 0.99 USD</p>
+                <button class="btn" onclick="openCase('low')">Open Case</button>
+            </div>
+            <!-- Add more cases -->
+            <div class="case-item">
+                <img src="https://via.placeholder.com/200x300?text=Mid+Case" alt="Mid Case">
+                <h3>Mid Case</h3>
+                <p>Cost: 4.99 USD</p>
+                <button class="btn" onclick="openCase('mid')">Open Case</button>
+            </div>
+        </div>
     </section>
 
-    <section id="wallet" class="section">
-        <h2>Wallet</h2>
-        <p>Balance: <span id="wallet-balance">0</span> USD</p>
-        <button class="btn" onclick="showTradeModal()">Charge via Skin Trade</button>
-        <div id="trade-modal" style="display:none; background:#1c1c1c; padding:30px; border-radius:15px; margin-top:30px; box-shadow: 0 0 20px rgba(0,255,128,0.5);">
-            <p>Important: Your Steam inventory must be set to public!</p>
-            <p>To charge your wallet, manually send a trade offer with your selected CS2 skin(s) to our account.</p>
-            <p>The value will be credited based on the skin's market price after acceptance.</p>
-            <a href="https://steamcommunity.com/tradeoffer/new/?partner=1445094693&token=CI12hRuH" target="_blank" class="btn">Send Trade Offer</a>
-            <p>After sending the offer, contact support via email for confirmation and credit.</p>
-            <button class="btn" onclick="closeTradeModal()">Close</button>
+    <section id="battles" class="section">
+        <h2>Battles</h2>
+        <button class="btn" onclick="createBattle()">Create Battle</button>
+        <div class="battles-list">
+            <div class="battle-item">
+                <span>Battle #123 - 2 Players - Pot: 50 USD</span>
+                <button class="btn">Join</button>
+            </div>
+            <!-- Add more dynamic battles -->
         </div>
     </section>
 
     <section id="shop" class="section">
         <h2>Shop</h2>
-        <p>Purchase CS2 skins using your wallet balance. Browse and buy from Steam Market.</p>
-        <div class="inventory-grid">
-            <div class="inventory-item">
-                <a href="https://steamcommunity.com/market/listings/730/SG%20553%20%7C%20Darkwing%20(Field-Tested)" target="_blank">SG 553 | Darkwing (Field-Tested)</a>
+        <div class="shop-grid">
+            <div class="shop-item">
+                <img src="https://via.placeholder.com/200?text=AK-47" alt="AK-47 Skin">
+                <h3>AK-47 | Redline</h3>
+                <p>Price: 10.00 USD</p>
+                <button class="btn" onclick="buyItem('ak47')">Buy</button>
             </div>
-            <!-- Add more static skin links or dynamically if server added later -->
-            <div class="inventory-item">
-                <a href="https://steamcommunity.com/market/listings/730/AK-47%20%7C%20Redline%20(Field-Tested)" target="_blank">AK-47 | Redline (Field-Tested)</a>
-            </div>
-            <div class="inventory-item">
-                <a href="https://steamcommunity.com/market/listings/730/AWP%20%7C%20Asiimov%20(Field-Tested)" target="_blank">AWP | Asiimov (Field-Tested)</a>
-            </div>
+            <!-- Add more items -->
         </div>
     </section>
 
-    <section id="skin-battle" class="section">
-        <h2>Skin Battle</h2>
-        <div class="reel-container">
-            <div class="reel" id="reel1"><div class="skin-slot"></div></div>
-            <div class="reel" id="reel2"><div class="skin-slot"></div></div>
-            <div class="reel" id="reel3"><div class="skin-slot"></div></div>
-            <div class="reel" id="reel4"><div class="skin-slot"></div></div>
-            <div class="reel" id="reel5"><div class="skin-slot"></div></div>
-        </div>
-        <button class="spin-btn" onclick="spinReel(1)">Spin Reel 1 (5 USD)</button>
-        <button class="spin-btn" onclick="spinReel(2)">Spin Reel 2 (7 USD)</button>
-        <button class="spin-btn" onclick="spinReel(3)">Spin Reel 3 (10 USD)</button>
-        <button class="spin-btn" onclick="spinReel(4)">Spin Reel 4 (15 USD)</button>
-        <button class="spin-btn" onclick="spinReel(5)">Spin Reel 5 (20 USD)</button>
-        <div id="win-options" style="display:none; margin-top:20px;">
-            <button class="btn" onclick="sellSkin()">Sell for Wallet</button>
-            <button class="btn" onclick="addToInventory()">Add to Inventory</button>
-        </div>
+    <section id="upgrade" class="section">
+        <h2>Upgrade</h2>
+        <p>Upgrade your skins here.</p>
+        <!-- Add upgrade mechanics -->
     </section>
 
-    <section id="career" class="section">
-        <h2>Career</h2>
-        <p>Track your progress, achievements, and levels in BM CS.</p>
-        <!-- Add career features like progress bars, etc. -->
+    <section id="affiliates" class="section">
+        <h2>Affiliates</h2>
+        <p>Refer friends and earn rewards.</p>
+        <!-- Add affiliate system -->
     </section>
 
-    <section id="account" class="section">
-        <h2>Account</h2>
-        <p>Steam Username: <span id="steam-username">Not Linked</span></p>
-        <p>Steam Avatar: <img id="steam-avatar" src="" alt="Avatar" style="width:100px; border-radius:50%;"></p>
-        <p>Steam Wallet Balance: <span id="steam-wallet">0</span> USD</p>
+    <section id="profile" class="section">
+        <h2>Profile</h2>
+        <p>Steam ID: <span id="steam-id"></span></p>
+        <p>Level: 1</p>
+        <p>Inventory Value: 0 USD</p>
+        <!-- More user info -->
     </section>
 
-    <section id="inventory" class="section">
-        <h2>Inventory</h2>
-        <div id="inventory-items" class="inventory-grid"></div>
-        <button class="btn" onclick="withdrawSkins()" id="withdraw-btn" disabled>Withdraw Skins to Steam</button>
-    </section>
-
-    <section id="support" class="section">
-        <h2>Support</h2>
-        <p>Contact us for any issues or inquiries.</p>
-        <a href="mailto:bm.pro.ir@gmail.com" class="btn">Email Support: bm.pro.ir@gmail.com</a>
-    </section>
-
-    <div id="withdraw-modal" style="display:none;" class="overlay">
+    <div id="deposit-modal" style="display:none;" class="overlay">
         <div class="modal">
-            <p>Your skin transfer request has been submitted. It will take 1 hour to 2 days. For faster processing, message the admin via support.</p>
-            <button class="btn" onclick="closeWithdrawModal()">Close</button>
+            <h3>Deposit to Wallet</h3>
+            <p>Send skins via trade to charge your balance.</p>
+            <a href="https://steamcommunity.com/tradeoffer/new/?partner=1445094693&token=CI12hRuH" target="_blank" class="btn">Send Trade</a>
+            <button class="btn" onclick="closeDepositModal()">Close</button>
+        </div>
+    </div>
+
+    <div id="win-modal" style="display:none;" class="overlay">
+        <div class="modal">
+            <h3>You Won!</h3>
+            <p id="win-skin"></p>
+            <button class="btn" onclick="sellWin()">Sell</button>
+            <button class="btn" onclick="addToInventoryWin()">Inventory</button>
+            <button class="btn" onclick="closeWinModal()">Close</button>
         </div>
     </div>
 
     <script>
-        const STEAM_API_KEY = '047BD93187DEADECD941E56D36223F25';
-        const TRADE_LINK = 'https://steamcommunity.com/tradeoffer/new/?partner=1445094693&token=CI12hRuH';
-        let linkedSteam = false;
+        let linkedSteam = localStorage.getItem('linkedSteam') === 'true' || false;
         let walletBalance = parseFloat(localStorage.getItem('walletBalance')) || 0;
         let inventory = JSON.parse(localStorage.getItem('inventory')) || [];
-        let steamInfo = {};
-        let steamWallet = 0;
-        let wonSkin = { name: '', value: 0 };
+        let userName = localStorage.getItem('userName') || 'Guest';
+        let userAvatar = localStorage.getItem('userAvatar') || 'https://via.placeholder.com/40?text=?';
 
-        document.getElementById('wallet-balance').innerText = walletBalance.toFixed(2);
+        if (!linkedSteam) {
+            document.getElementById('steam-link-overlay').style.display = 'flex';
+        } else {
+            updateUserInfo();
+        }
 
         document.getElementById('link-steam-btn').addEventListener('click', () => {
-            // Mock Steam link; in real, implement OpenID redirect (requires server for callback)
-            linkedSteam = true;
-            document.getElementById('steam-link-overlay').style.display = 'none';
-            fetchSteamInfo(); // Mock
+            // Simulate real Steam link: In production, redirect to Steam OpenID endpoint
+            // e.g., window.location.href = 'https://steamcommunity.com/openid/login?params...';
+            // For demo, simulate success after delay
+            setTimeout(() => {
+                linkedSteam = true;
+                localStorage.setItem('linkedSteam', 'true');
+                userName = 'LinkedUser';
+                userAvatar = 'https://via.placeholder.com/40?text=U';
+                localStorage.setItem('userName', userName);
+                localStorage.setItem('userAvatar', userAvatar);
+                document.getElementById('steam-link-overlay').style.display = 'none';
+                updateUserInfo();
+            }, 2000); // Simulate linking time
         });
 
-        function fetchSteamInfo() {
-            // Mock data; real fetch would require server due to CORS/API limits
-            steamInfo = { username: 'BMUser', avatar: 'https://via.placeholder.com/100?text=Avatar' };
-            steamWallet = 50; // Mock
-            document.getElementById('steam-username').innerText = steamInfo.username;
-            document.getElementById('steam-avatar').src = steamInfo.avatar;
-            document.getElementById('steam-wallet').innerText = steamWallet.toFixed(2);
+        function updateUserInfo() {
+            document.getElementById('user-name').innerText = userName;
+            document.getElementById('user-avatar').src = userAvatar;
+            document.getElementById('wallet-balance').innerText = walletBalance.toFixed(2);
         }
 
         function showSection(sectionId) {
             if (!linkedSteam) {
-                alert('Please link your Steam account first!');
+                alert('Link your Steam account first!');
                 return;
             }
             document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
             document.getElementById(sectionId).style.display = 'block';
-            if (sectionId === 'inventory') loadInventory();
         }
 
-        function showTradeModal() {
-            document.getElementById('trade-modal').style.display = 'block';
+        function showDepositModal() {
+            document.getElementById('deposit-modal').style.display = 'flex';
         }
 
-        function closeTradeModal() {
-            document.getElementById('trade-modal').style.display = 'none';
+        function closeDepositModal() {
+            document.getElementById('deposit-modal').style.display = 'none';
         }
 
-        const skinPools = {
-            1: [{name: 'Common Skin 1', value: 5}, {name: 'Common Skin 2', value: 6}, {name: 'Rare Skin 1', value: 10}],
-            2: [{name: 'Uncommon Skin 1', value: 7}, {name: 'Uncommon Skin 2', value: 8}, {name: 'Epic Skin 1', value: 14}],
-            3: [{name: 'Rare Skin 2', value: 10}, {name: 'Rare Skin 3', value: 12}, {name: 'Legendary Skin 1', value: 20}],
-            4: [{name: 'Epic Skin 2', value: 15}, {name: 'Epic Skin 3', value: 18}, {name: 'Mythical Skin 1', value: 30}],
-            5: [{name: 'Legendary Skin 2', value: 20}, {name: 'Legendary Skin 3', value: 25}, {name: 'Godlike Skin 1', value: 40}]
+        const casePools = {
+            low: [{name: 'P90 | Grim', value: 0.5}, {name: 'Glock-18 | Candy Apple', value: 1}, {name: 'Rare Knife', value: 50}],
+            mid: [{name: 'AK-47 | Elite Build', value: 2}, {name: 'AWP | Worm God', value: 3}, {name: 'Legendary Skin', value: 100}]
         };
 
-        function spinReel(reelNum) {
-            const costs = [5, 7, 10, 15, 20];
-            const cost = costs[reelNum - 1];
+        function openCase(caseType) {
+            const cost = caseType === 'low' ? 0.99 : 4.99;
             if (walletBalance < cost) return alert('Insufficient balance!');
             walletBalance -= cost;
             updateWallet();
-            const reel = document.getElementById(`reel${reelNum}`);
-            reel.innerHTML = '<div class="skin-slot spinning">Spinning...</div>';
-            reel.classList.add('spinning');
+            // Simulate opening
             setTimeout(() => {
-                const skins = skinPools[reelNum];
+                const skins = casePools[caseType];
                 const randomIndex = Math.floor(Math.random() * skins.length);
-                wonSkin = skins[randomIndex];
-                reel.innerHTML = `<div class="skin-slot">${wonSkin.name} ($${wonSkin.value})</div>`;
-                reel.classList.remove('spinning');
-                document.getElementById('win-options').style.display = 'block';
-            }, 3000); // Simulate spin time
+                const won = skins[randomIndex];
+                document.getElementById('win-skin').innerText = `${won.name} ($${won.value})`;
+                document.getElementById('win-modal').style.display = 'flex';
+            }, 2000);
         }
 
-        function sellSkin() {
-            walletBalance += wonSkin.value;
+        function sellWin() {
+            const value = parseFloat(document.getElementById('win-skin').innerText.match(/\d+/)[0]);
+            walletBalance += value;
             updateWallet();
-            document.getElementById('win-options').style.display = 'none';
-            wonSkin = { name: '', value: 0 };
+            closeWinModal();
         }
 
-        function addToInventory() {
-            inventory.push(wonSkin);
+        function addToInventoryWin() {
+            const skin = document.getElementById('win-skin').innerText;
+            inventory.push(skin);
             localStorage.setItem('inventory', JSON.stringify(inventory));
-            document.getElementById('win-options').style.display = 'none';
-            wonSkin = { name: '', value: 0 };
-            checkWithdraw();
+            closeWinModal();
         }
 
-        function loadInventory() {
-            const container = document.getElementById('inventory-items');
-            container.innerHTML = '';
-            inventory.forEach(skin => {
-                const item = document.createElement('div');
-                item.className = 'inventory-item';
-                item.innerText = `${skin.name} ($${skin.value})`;
-                container.appendChild(item);
-            });
-            checkWithdraw();
+        function closeWinModal() {
+            document.getElementById('win-modal').style.display = 'none';
         }
 
-        function checkWithdraw() {
-            if (inventory.length >= 30 && walletBalance >= 49) {
-                document.getElementById('withdraw-btn').disabled = false;
-            } else {
-                document.getElementById('withdraw-btn').disabled = true;
-            }
+        function createBattle() {
+            alert('Battle created! (Simulated)');
+            // Add to battles list
         }
 
-        function withdrawSkins() {
-            // Mock withdraw; in real, send to server for trade bot
-            alert('Withdraw requested. Processing...');
-            document.getElementById('withdraw-modal').style.display = 'flex';
-            // Clear inventory for demo
-            inventory = [];
-            localStorage.setItem('inventory', JSON.stringify(inventory));
-            loadInventory();
-        }
-
-        function closeWithdrawModal() {
-            document.getElementById('withdraw-modal').style.display = 'none';
+        function buyItem(item) {
+            alert(`Bought ${item}! (Simulated)`);
+            // Deduct balance, add to inventory
         }
 
         function updateWallet() {
@@ -381,28 +361,7 @@
             localStorage.setItem('walletBalance', walletBalance);
         }
 
-        // Add spinning animation CSS
-        const style = document.createElement('style');
-        style.innerHTML = `
-            .spinning {
-                animation: spin 1s linear infinite;
-            }
-            @keyframes spin {
-                0% { transform: translateY(0); }
-                100% { transform: translateY(-100%); }
-            }
-            .skin-slot {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: rgba(0,0,0,0.5);
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Load Google font for better design
+        // Load Google font
         const fontLink = document.createElement('link');
         fontLink.href = 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap';
         fontLink.rel = 'stylesheet';
