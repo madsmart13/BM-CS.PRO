@@ -150,10 +150,10 @@
     <div id="steam-link-overlay" class="overlay">
         <div class="modal">
             <p>You must link your Steam account to access BM CS.</p>
-            <p>Enter your SteamID64 to link (e.g., 76561197960287930):</p>
-            <input type="text" id="steam-id-input" placeholder="SteamID64">
-            <button id="link-steam-btn">Link Steam Account</button>
-            <p>Note: This uses Steam API to fetch your info. For real auth, use OpenID (requires server).</p>
+            <a href="https://steamcommunity.com/openid/login?openid.mode=checkid_setup&openid.ns=http://specs.openid.net/auth/2.0&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.return_to=https://example.com/auth/steam/callback" id="steam-login-link">
+                <button class="btn">Link Steam Account</button>
+            </a>
+            <p>Note: For real Steam OpenID, replace return_to with your site's callback URL (requires server).</p>
         </div>
     </div>
 
@@ -167,6 +167,7 @@
             <a href="#affiliates" onclick="showSection('affiliates')">Affiliates</a>
             <a href="#inventory" onclick="showSection('inventory')">Inventory</a>
             <a href="#account" onclick="showSection('account')">Account</a>
+            <a href="#support" onclick="showSection('support')">Support</a>
         </nav>
         <div class="user-info">
             <img id="user-avatar" src="https://via.placeholder.com/40?text=?" alt="Avatar">
@@ -191,7 +192,12 @@
                 <p>Cost: 4.99 USD</p>
                 <button class="btn" onclick="openCase('mid')">Open Case</button>
             </div>
-            <!-- Add more -->
+            <div class="case-item">
+                <img src="https://via.placeholder.com/200x300?text=High+Case" alt="High Case">
+                <h3>High Case</h3>
+                <p>Cost: 9.99 USD</p>
+                <button class="btn" onclick="openCase('high')">Open Case</button>
+            </div>
         </div>
     </section>
 
@@ -203,7 +209,10 @@
                 <span>Battle #123 - 2 Players - Pot: 50 USD</span>
                 <button class="btn" onclick="joinBattle(123)">Join</button>
             </div>
-            <!-- Add more -->
+            <div class="battle-item">
+                <span>Battle #124 - 4 Players - Pot: 100 USD</span>
+                <button class="btn" onclick="joinBattle(124)">Join</button>
+            </div>
         </div>
     </section>
 
@@ -342,20 +351,17 @@
                 <p>Price: 3000.00 USD</p>
                 <button class="btn" onclick="buyItem({'name':'M4A4 | Howl', 'price':3000.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_howl_light_large.2d2d2d2d.png'})">Buy</button>
             </div>
-            <!-- Added more items with guessed image URLs based on pattern -->
         </div>
     </section>
 
     <section id="upgrade" class="section">
         <h2>Upgrade</h2>
         <p>Upgrade your skins here.</p>
-        <!-- Add upgrade features -->
     </section>
 
     <section id="affiliates" class="section">
         <h2>Affiliates</h2>
         <p>Refer friends and earn rewards.</p>
-        <!-- Add affiliate features -->
     </section>
 
     <section id="inventory" class="section">
@@ -371,11 +377,19 @@
         <p>Steam Profile URL: <span id="steam-profile"></span></p>
     </section>
 
+    <section id="support" class="section">
+        <h2>Support</h2>
+        <p>Contact us for any issues or inquiries.</p>
+        <a href="mailto:bm.pro.ir@gmail.com" class="btn">Email Support: bm.pro.ir@gmail.com</a>
+    </section>
+
     <div id="deposit-modal" style="display:none;" class="overlay">
         <div class="modal">
             <h3>Deposit to Wallet</h3>
+            <p>Your inventory must be public!</p>
             <p>Send skins via trade to charge your balance.</p>
             <a href="https://steamcommunity.com/tradeoffer/new/?partner=1445094693&token=CI12hRuH" target="_blank" class="btn">Send Trade</a>
+            <p>Contact support after sending to confirm and credit your wallet.</p>
             <button class="btn" onclick="closeDepositModal()">Close</button>
         </div>
     </div>
@@ -404,44 +418,59 @@
         let linkedSteam = localStorage.getItem('linkedSteam') === 'true' || false;
         let walletBalance = parseFloat(localStorage.getItem('walletBalance')) || 0;
         let inventory = JSON.parse(localStorage.getItem('inventory')) || [];
-        let steamInfo = JSON.parse(localStorage.getItem('steamInfo')) || { username: 'Guest', avatar: 'https://via.placeholder.com/40?text=?', profile: '' };
+        let steamInfo = JSON.parse(localStorage.getItem('steamInfo')) || { username: 'Guest', avatar: 'https://via.placeholder.com/40?text=?', profile: '', steamid: '' };
 
         if (!linkedSteam) {
             document.getElementById('steam-link-overlay').style.display = 'flex';
         } else {
             updateUserInfo();
+            loadInventory();
         }
 
-        document.getElementById('wallet-balance').innerText = walletBalance.toFixed(2);
+        // Simulate OpenID login return (since no server)
+        const urlParams = new URLSearchParams(window.location.search);
+        const steamid = urlParams.get('openid.identity')?.match(/\/id\/(\d+)/)?.[1];
+        if (steamid && !linkedSteam) {
+            fetchSteamInfo(steamid);
+        }
 
-        document.getElementById('link-steam-btn').addEventListener('click', () => {
-            const steamId = document.getElementById('steam-id-input').value;
-            if (!steamId) return alert('Enter SteamID64!');
-            fetch(`https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${STEAM_API_KEY}&steamids=${steamId}`)
-                .then(response => response.json())
-                .then(data => {
-                    const player = data.response.players[0];
-                    if (player) {
-                        linkedSteam = true;
-                        localStorage.setItem('linkedSteam', 'true');
-                        steamInfo = { username: player.personaname, avatar: player.avatarfull, profile: player.profileurl };
-                        localStorage.setItem('steamInfo', JSON.stringify(steamInfo));
-                        document.getElementById('steam-link-overlay').style.display = 'none';
-                        updateUserInfo();
-                        document.getElementById('steam-username').innerText = steamInfo.username;
-                        document.getElementById('steam-avatar').src = steamInfo.avatar;
-                        document.getElementById('steam-profile').innerText = steamInfo.profile;
-                    } else {
-                        alert('Invalid SteamID!');
-                    }
-                })
-                .catch(error => alert('Error fetching Steam info: ' + error + ' (CORS or API issue; use server for production)'));
-        });
+        function fetchSteamInfo(steamid) {
+            // Mock successful OpenID return
+            // In real app, this fetch happens on server after OpenID callback
+            const mockResponse = {
+                response: {
+                    players: [{
+                        steamid: steamid,
+                        personaname: 'BMUser_' + steamid.slice(-4),
+                        avatarfull: 'https://via.placeholder.com/100?text=' + steamid.slice(-4),
+                        profileurl: 'https://steamcommunity.com/profiles/' + steamid
+                    }]
+                }
+            };
+            const player = mockResponse.response.players[0];
+            linkedSteam = true;
+            localStorage.setItem('linkedSteam', 'true');
+            steamInfo = {
+                username: player.personaname,
+                avatar: player.avatarfull,
+                profile: player.profileurl,
+                steamid: player.steamid
+            };
+            localStorage.setItem('steamInfo', JSON.stringify(steamInfo));
+            document.getElementById('steam-link-overlay').style.display = 'none';
+            updateUserInfo();
+            loadInventory();
+            // Clear URL params
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
 
         function updateUserInfo() {
             document.getElementById('user-name').innerText = steamInfo.username;
             document.getElementById('user-avatar').src = steamInfo.avatar;
             document.getElementById('wallet-balance').innerText = walletBalance.toFixed(2);
+            document.getElementById('steam-username').innerText = steamInfo.username;
+            document.getElementById('steam-avatar').src = steamInfo.avatar;
+            document.getElementById('steam-profile').innerText = steamInfo.profile;
         }
 
         function showSection(sectionId) {
@@ -463,12 +492,26 @@
         }
 
         const casePools = {
-            low: [{name: 'P90 | Grim', value: 0.5}, {name: 'Glock-18 | Candy Apple', value: 1}, {name: 'Rare Knife', value: 50}],
-            mid: [{name: 'AK-47 | Elite Build', value: 2}, {name: 'AWP | Worm God', value: 3}, {name: 'Legendary Skin', value: 100}]
+            low: [
+                {name: 'P90 | Grim', value: 0.5, img: 'https://via.placeholder.com/200?text=P90+Grim'},
+                {name: 'Glock-18 | Candy Apple', value: 1, img: 'https://via.placeholder.com/200?text=Glock-18+Candy+Apple'},
+                {name: 'Rare Knife', value: 50, img: 'https://via.placeholder.com/200?text=Rare+Knife'}
+            ],
+            mid: [
+                {name: 'AK-47 | Elite Build', value: 2, img: 'https://via.placeholder.com/200?text=AK-47+Elite+Build'},
+                {name: 'AWP | Worm God', value: 3, img: 'https://via.placeholder.com/200?text=AWP+Worm+God'},
+                {name: 'Legendary Skin', value: 100, img: 'https://via.placeholder.com/200?text=Legendary+Skin'}
+            ],
+            high: [
+                {name: 'M4A4 | Howl', value: 3000, img: 'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_howl_light_large.2d2d2d2d.png'},
+                {name: 'AK-47 | Fire Serpent', value: 1500, img: 'https://via.placeholder.com/200?text=AK-47+Fire+Serpent'},
+                {name: 'AWP | Dragon Lore', value: 5000, img: 'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_awp_cu_awp_dragon_lore_light_large.1d1d1d1d.png'}
+            ]
         };
 
         function openCase(caseType) {
-            const cost = caseType === 'low' ? 0.99 : 4.99;
+            const costs = { low: 0.99, mid: 4.99, high: 9.99 };
+            const cost = costs[caseType];
             if (walletBalance < cost) return alert('Insufficient balance!');
             walletBalance -= cost;
             updateWallet();
@@ -476,7 +519,7 @@
                 const skins = casePools[caseType];
                 const randomIndex = Math.floor(Math.random() * skins.length);
                 const won = skins[randomIndex];
-                document.getElementById('win-skin').innerText = `${won.name} ($${won.value})`;
+                document.getElementById('win-skin').innerHTML = `<img src="${won.img}" style="width:100px;"><br>${won.name} ($${won.value})`;
                 document.getElementById('win-modal').style.display = 'flex';
             }, 2000);
         }
@@ -489,11 +532,13 @@
         }
 
         function addToInventoryWin() {
-            const skinName = document.getElementById('win-skin').innerText.split(' (')[0];
+            const skinName = document.getElementById('win-skin').innerText.split(' ($')[0];
             const skinValue = parseFloat(document.getElementById('win-skin').innerText.match(/\$(\d+\.?\d*)/)[1]);
-            inventory.push({name: skinName, price: skinValue, img: 'https://via.placeholder.com/200?text=Won+Skin'});
+            const skinImg = document.getElementById('win-skin').querySelector('img').src;
+            inventory.push({ name: skinName, price: skinValue, img: skinImg });
             localStorage.setItem('inventory', JSON.stringify(inventory));
             closeWinModal();
+            loadInventory();
         }
 
         function closeWinModal() {
@@ -501,20 +546,27 @@
         }
 
         function createBattle() {
-            alert('Battle created! (Simulated)');
+            if (walletBalance < 10) return alert('Need at least 10 USD to create a battle!');
+            walletBalance -= 10;
+            updateWallet();
+            alert('Battle created! (Pot: 10 USD)');
         }
 
         function joinBattle(id) {
-            alert(`Joined battle #${id}! (Simulated)`);
+            if (walletBalance < 10) return alert('Need at least 10 USD to join!');
+            walletBalance -= 10;
+            updateWallet();
+            alert(`Joined battle #${id}!`);
         }
 
         function buyItem(item) {
             if (walletBalance < item.price) return alert('Insufficient balance!');
             walletBalance -= item.price;
-            updateWallet();
             inventory.push(item);
             localStorage.setItem('inventory', JSON.stringify(inventory));
+            updateWallet();
             alert(`Bought ${item.name}! Added to inventory.`);
+            loadInventory();
         }
 
         function loadInventory() {
@@ -533,6 +585,9 @@
             const code = Math.random().toString(36).substring(2, 10).toUpperCase();
             document.getElementById('random-code').innerText = code;
             document.getElementById('withdraw-modal').style.display = 'flex';
+            inventory = [];
+            localStorage.setItem('inventory', JSON.stringify(inventory));
+            loadInventory();
         });
 
         function closeWithdrawModal() {
@@ -542,6 +597,7 @@
         function updateWallet() {
             document.getElementById('wallet-balance').innerText = walletBalance.toFixed(2);
             localStorage.setItem('walletBalance', walletBalance);
+            if (document.getElementById('inventory').style.display === 'block') loadInventory();
         }
 
         // Load Google font
