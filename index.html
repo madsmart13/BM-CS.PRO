@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BM CS - Ultimate Gaming Platform</title>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal {
+            background: #1c1c1c;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 255, 128, 0.6);
+            max-width: 400px;
+        }
+        .modal button, .btn {
+            background: linear-gradient(45deg, #00ff7f, #00bfff);
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .modal button:hover, .btn:hover {
+            transform: scale(1.05);
+        }
+        nav {
+            background: #222;
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        nav a:hover {
+            background: #333;
+        }
+        .section {
+            display: none;
+            padding: 30px;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        #home {
+            display: block;
+            text-align: center;
+            background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"%3E%3Cpath fill="%2300ff7f" fill-opacity="0.2" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,176C1248,192,1344,192,1392,192L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"%3E%3C/path%3E%3C/svg%3E') no-repeat bottom;
+        }
+        .reel-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+        }
+        .reel {
+            width: 180px;
+            height: 240px;
+            background: #282828;
+            border: 3px solid #00ff7f;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        .reel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,255,128,0.3), transparent);
+            animation: rotate 10s linear infinite;
+        }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .spin-btn {
+            background: linear-gradient(45deg, #ff4500, #ff1493);
+            margin: 10px;
+        }
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .inventory-item {
+            background: #333;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0,255,128,0.4);
+        }
+        #support-section a {
+            color: #00ff7f;
+            font-size: 18px;
+        }
+        .gaming-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #000, #111);
+            opacity: 0.8;
+            z-index: -1;
+            animation: pulse 5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.6; }
+        }
+    </style>
+</head>
+<body>
+    <div class="gaming-bg"></div>
+    <div id="steam-link-overlay" class="overlay">
+        <div class="modal">
+            <p>Welcome to BM CS! First, link your Steam account to proceed.</p>
+            <button id="link-steam-btn">Link Steam</button>
+        </div>
+    </div>
+
+    <nav>
+        <a href="#home" onclick="showSection('home')">Home</a>
+        <a href="#wallet" onclick="showSection('wallet')">Wallet</a>
+        <a href="#shop" onclick="showSection('shop')">Shop</a>
+        <a href="#skin-battle" onclick="showSection('skin-battle')">Skin Battle</a>
+        <a href="#career" onclick="showSection('career')">Career</a>
+        <a href="#account" onclick="showSection('account')">Account</a>
+        <a href="#inventory" onclick="showSection('inventory')">Inventory</a>
+        <a href="#support" onclick="showSection('support')">Support</a>
+    </nav>
+
+    <section id="home" class="section">
+        <h1>BM CS - Your Ultimate CS2 Gaming Hub</h1>
+        <p>Dive into skins, battles, and more!</p>
+    </section>
+
+    <section id="wallet" class="section">
+        <h2>Wallet</h2>
+        <p>Balance: <span id="wallet-balance">0</span> USD</p>
+        <button class="btn" onclick="showTradeModal()">Charge via Skin Trade</button>
+        <div id="trade-modal" style="display:none; background:#1c1c1c; padding:30px; border-radius:15px; margin-top:30px; box-shadow: 0 0 20px rgba(0,255,128,0.5);">
+            <p>Important: Your Steam inventory must be set to public!</p>
+            <p>To charge your wallet, manually send a trade offer with your selected CS2 skin(s) to our account.</p>
+            <p>The value will be credited based on the skin's market price after acceptance.</p>
+            <a href="https://steamcommunity.com/tradeoffer/new/?partner=1445094693&token=CI12hRuH" target="_blank" class="btn">Send Trade Offer</a>
+            <p>After sending the offer, contact support via email for confirmation and credit.</p>
+            <button class="btn" onclick="closeTradeModal()">Close</button>
+        </div>
+    </section>
+
+    <section id="shop" class="section">
+        <h2>Shop</h2>
+        <p>Purchase CS2 skins using your wallet balance. Browse and buy from Steam Market.</p>
+        <div class="inventory-grid">
+            <div class="inventory-item">
+                <a href="https://steamcommunity.com/market/listings/730/SG%20553%20%7C%20Darkwing%20(Field-Tested)" target="_blank">SG 553 | Darkwing (Field-Tested)</a>
+            </div>
+            <!-- Add more static skin links or dynamically if server added later -->
+            <div class="inventory-item">
+                <a href="https://steamcommunity.com/market/listings/730/AK-47%20%7C%20Redline%20(Field-Tested)" target="_blank">AK-47 | Redline (Field-Tested)</a>
+            </div>
+            <div class="inventory-item">
+                <a href="https://steamcommunity.com/market/listings/730/AWP%20%7C%20Asiimov%20(Field-Tested)" target="_blank">AWP | Asiimov (Field-Tested)</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="skin-battle" class="section">
+        <h2>Skin Battle</h2>
+        <div class="reel-container">
+            <div class="reel" id="reel1"><div class="skin-slot"></div></div>
+            <div class="reel" id="reel2"><div class="skin-slot"></div></div>
+            <div class="reel" id="reel3"><div class="skin-slot"></div></div>
+            <div class="reel" id="reel4"><div class="skin-slot"></div></div>
+            <div class="reel" id="reel5"><div class="skin-slot"></div></div>
+        </div>
+        <button class="spin-btn" onclick="spinReel(1)">Spin Reel 1 (5 USD)</button>
+        <button class="spin-btn" onclick="spinReel(2)">Spin Reel 2 (7 USD)</button>
+        <button class="spin-btn" onclick="spinReel(3)">Spin Reel 3 (10 USD)</button>
+        <button class="spin-btn" onclick="spinReel(4)">Spin Reel 4 (15 USD)</button>
+        <button class="spin-btn" onclick="spinReel(5)">Spin Reel 5 (20 USD)</button>
+        <div id="win-options" style="display:none; margin-top:20px;">
+            <button class="btn" onclick="sellSkin()">Sell for Wallet</button>
+            <button class="btn" onclick="addToInventory()">Add to Inventory</button>
+        </div>
+    </section>
+
+    <section id="career" class="section">
+        <h2>Career</h2>
+        <p>Track your progress, achievements, and levels in BM CS.</p>
+        <!-- Add career features like progress bars, etc. -->
+    </section>
+
+    <section id="account" class="section">
+        <h2>Account</h2>
+        <p>Steam Username: <span id="steam-username">Not Linked</span></p>
+        <p>Steam Avatar: <img id="steam-avatar" src="" alt="Avatar" style="width:100px; border-radius:50%;"></p>
+        <p>Steam Wallet Balance: <span id="steam-wallet">0</span> USD</p>
+    </section>
+
+    <section id="inventory" class="section">
+        <h2>Inventory</h2>
+        <div id="inventory-items" class="inventory-grid"></div>
+        <button class="btn" onclick="withdrawSkins()" id="withdraw-btn" disabled>Withdraw Skins to Steam</button>
+    </section>
+
+    <section id="support" class="section">
+        <h2>Support</h2>
+        <p>Contact us for any issues or inquiries.</p>
+        <a href="mailto:bm.pro.ir@gmail.com" class="btn">Email Support: bm.pro.ir@gmail.com</a>
+    </section>
+
+    <div id="withdraw-modal" style="display:none;" class="overlay">
+        <div class="modal">
+            <p>Your skin transfer request has been submitted. It will take 1 hour to 2 days. For faster processing, message the admin via support.</p>
+            <button class="btn" onclick="closeWithdrawModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const STEAM_API_KEY = '047BD93187DEADECD941E56D36223F25';
+        const TRADE_LINK = 'https://steamcommunity.com/tradeoffer/new/?partner=1445094693&token=CI12hRuH';
+        let linkedSteam = false;
+        let walletBalance = parseFloat(localStorage.getItem('walletBalance')) || 0;
+        let inventory = JSON.parse(localStorage.getItem('inventory')) || [];
+        let steamInfo = {};
+        let steamWallet = 0;
+        let wonSkin = { name: '', value: 0 };
+
+        document.getElementById('wallet-balance').innerText = walletBalance.toFixed(2);
+
+        document.getElementById('link-steam-btn').addEventListener('click', () => {
+            // Mock Steam link; in real, implement OpenID redirect (requires server for callback)
+            linkedSteam = true;
+            document.getElementById('steam-link-overlay').style.display = 'none';
+            fetchSteamInfo(); // Mock
+        });
+
+        function fetchSteamInfo() {
+            // Mock data; real fetch would require server due to CORS/API limits
+            steamInfo = { username: 'BMUser', avatar: 'https://via.placeholder.com/100?text=Avatar' };
+            steamWallet = 50; // Mock
+            document.getElementById('steam-username').innerText = steamInfo.username;
+            document.getElementById('steam-avatar').src = steamInfo.avatar;
+            document.getElementById('steam-wallet').innerText = steamWallet.toFixed(2);
+        }
+
+        function showSection(sectionId) {
+            if (!linkedSteam) {
+                alert('Please link your Steam account first!');
+                return;
+            }
+            document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
+            document.getElementById(sectionId).style.display = 'block';
+            if (sectionId === 'inventory') loadInventory();
+        }
+
+        function showTradeModal() {
+            document.getElementById('trade-modal').style.display = 'block';
+        }
+
+        function closeTradeModal() {
+            document.getElementById('trade-modal').style.display = 'none';
+        }
+
+        const skinPools = {
+            1: [{name: 'Common Skin 1', value: 5}, {name: 'Common Skin 2', value: 6}, {name: 'Rare Skin 1', value: 10}],
+            2: [{name: 'Uncommon Skin 1', value: 7}, {name: 'Uncommon Skin 2', value: 8}, {name: 'Epic Skin 1', value: 14}],
+            3: [{name: 'Rare Skin 2', value: 10}, {name: 'Rare Skin 3', value: 12}, {name: 'Legendary Skin 1', value: 20}],
+            4: [{name: 'Epic Skin 2', value: 15}, {name: 'Epic Skin 3', value: 18}, {name: 'Mythical Skin 1', value: 30}],
+            5: [{name: 'Legendary Skin 2', value: 20}, {name: 'Legendary Skin 3', value: 25}, {name: 'Godlike Skin 1', value: 40}]
+        };
+
+        function spinReel(reelNum) {
+            const costs = [5, 7, 10, 15, 20];
+            const cost = costs[reelNum - 1];
+            if (walletBalance < cost) return alert('Insufficient balance!');
+            walletBalance -= cost;
+            updateWallet();
+            const reel = document.getElementById(`reel${reelNum}`);
+            reel.innerHTML = '<div class="skin-slot spinning">Spinning...</div>';
+            reel.classList.add('spinning');
+            setTimeout(() => {
+                const skins = skinPools[reelNum];
+                const randomIndex = Math.floor(Math.random() * skins.length);
+                wonSkin = skins[randomIndex];
+                reel.innerHTML = `<div class="skin-slot">${wonSkin.name} ($${wonSkin.value})</div>`;
+                reel.classList.remove('spinning');
+                document.getElementById('win-options').style.display = 'block';
+            }, 3000); // Simulate spin time
+        }
+
+        function sellSkin() {
+            walletBalance += wonSkin.value;
+            updateWallet();
+            document.getElementById('win-options').style.display = 'none';
+            wonSkin = { name: '', value: 0 };
+        }
+
+        function addToInventory() {
+            inventory.push(wonSkin);
+            localStorage.setItem('inventory', JSON.stringify(inventory));
+            document.getElementById('win-options').style.display = 'none';
+            wonSkin = { name: '', value: 0 };
+            checkWithdraw();
+        }
+
+        function loadInventory() {
+            const container = document.getElementById('inventory-items');
+            container.innerHTML = '';
+            inventory.forEach(skin => {
+                const item = document.createElement('div');
+                item.className = 'inventory-item';
+                item.innerText = `${skin.name} ($${skin.value})`;
+                container.appendChild(item);
+            });
+            checkWithdraw();
+        }
+
+        function checkWithdraw() {
+            if (inventory.length >= 30 && walletBalance >= 49) {
+                document.getElementById('withdraw-btn').disabled = false;
+            } else {
+                document.getElementById('withdraw-btn').disabled = true;
+            }
+        }
+
+        function withdrawSkins() {
+            // Mock withdraw; in real, send to server for trade bot
+            alert('Withdraw requested. Processing...');
+            document.getElementById('withdraw-modal').style.display = 'flex';
+            // Clear inventory for demo
+            inventory = [];
+            localStorage.setItem('inventory', JSON.stringify(inventory));
+            loadInventory();
+        }
+
+        function closeWithdrawModal() {
+            document.getElementById('withdraw-modal').style.display = 'none';
+        }
+
+        function updateWallet() {
+            document.getElementById('wallet-balance').innerText = walletBalance.toFixed(2);
+            localStorage.setItem('walletBalance', walletBalance);
+        }
+
+        // Add spinning animation CSS
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .spinning {
+                animation: spin 1s linear infinite;
+            }
+            @keyframes spin {
+                0% { transform: translateY(0); }
+                100% { transform: translateY(-100%); }
+            }
+            .skin-slot {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: rgba(0,0,0,0.5);
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Load Google font for better design
+        const fontLink = document.createElement('link');
+        fontLink.href = 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap';
+        fontLink.rel = 'stylesheet';
+        document.head.appendChild(fontLink);
+    </script>
+</body>
+</html>
