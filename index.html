@@ -150,10 +150,10 @@
     <div id="steam-link-overlay" class="overlay">
         <div class="modal">
             <p>You must link your Steam account to access BM CS.</p>
-            <a href="https://steamcommunity.com/openid/login?openid.mode=checkid_setup&openid.ns=http://specs.openid.net/auth/2.0&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.return_to=https://example.com/auth/steam/callback" id="steam-login-link">
+            <a id="steam-login-link" href="https://steamcommunity.com/openid/login?openid.mode=checkid_setup&openid.ns=http://specs.openid.net/auth/2.0&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.return_to=https://madsmart13.github.io/BM-CS.PRO/auth/steam/callback">
                 <button class="btn">Link Steam Account</button>
             </a>
-            <p>Note: For real Steam OpenID, replace return_to with your site's callback URL (requires server).</p>
+            <p>Note: This simulates Steam OpenID login. For real auth, set up a server for the callback.</p>
         </div>
     </div>
 
@@ -373,7 +373,7 @@
     <section id="account" class="section">
         <h2>Account</h2>
         <p>Steam Username: <span id="steam-username">Not Linked</span></p>
-        <p>Steam Avatar: <img id="steam-avatar" src="" alt="Avatar" style="width:100px; border-radius:50%;"></p>
+        <p>Steam Avatar: <img id="steam-avatar" src="https://via.placeholder.com/100?text=?" alt="Avatar" style="width:100px; border-radius:50%;"></p>
         <p>Steam Profile URL: <span id="steam-profile"></span></p>
     </section>
 
@@ -427,16 +427,17 @@
             loadInventory();
         }
 
-        // Simulate OpenID login return (since no server)
+        // Simulate Steam OpenID login return (no server, so we mock the callback)
         const urlParams = new URLSearchParams(window.location.search);
         const steamid = urlParams.get('openid.identity')?.match(/\/id\/(\d+)/)?.[1];
         if (steamid && !linkedSteam) {
             fetchSteamInfo(steamid);
         }
 
+        document.getElementById('steam-login-link').href = `https://steamcommunity.com/openid/login?openid.mode=checkid_setup&openid.ns=http://specs.openid.net/auth/2.0&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.return_to=https://madsmart13.github.io/BM-CS.PRO/auth/steam/callback`;
+
         function fetchSteamInfo(steamid) {
-            // Mock successful OpenID return
-            // In real app, this fetch happens on server after OpenID callback
+            // Simulate Steam API response (since GitHub Pages can't handle real callbacks)
             const mockResponse = {
                 response: {
                     players: [{
@@ -461,7 +462,7 @@
             updateUserInfo();
             loadInventory();
             // Clear URL params
-            window.history.replaceState({}, document.title, window.location.pathname);
+            window.history.replaceState({}, document.title, 'https://madsmart13.github.io/BM-CS.PRO/');
         }
 
         function updateUserInfo() {
@@ -605,6 +606,8 @@
         fontLink.href = 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap';
         fontLink.rel = 'stylesheet';
         document.head.appendChild(fontLink);
-    </script>
+
+        // For testing: Simulate login by appending ?openid.identity=https://steamcommunity.com/openid/id/76561197960287930 to URL
+        </script>
 </body>
 </html>
