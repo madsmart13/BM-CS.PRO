@@ -2,235 +2,273 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8">
-  <title>Neon Gaming Dashboard</title>
-  <meta name="viewport" content="width=1000, initial-scale=1">
+  <title>Neon Gamer Dashboard | بدون سرور</title>
+  <meta name="viewport" content="width=900, initial-scale=1">
   <link href="https://fonts.googleapis.com/css?family=Orbitron:700&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0; background: #151f2e; font-family: 'Orbitron', Arial, sans-serif; color: #fff;
-      transition: background 0.5s;
-    }
-    .neon {
-      text-shadow:
-        0 0 10px #60eaff,
-        0 0 20px #14e6f5,
-        0 0 25px #0ff0fc,
-        0 0 35px #14e6f5;
-      color: #60eaff;
-    }
-    header {
-      background: linear-gradient(90deg,#182b4a 70%,#14e6f5 120%);
-      padding: 24px 36px; color: #14e6f5; display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 2.5px solid #14e6f5;
-      box-shadow: 0 0 18px #14e6f5a0;
-    }
-    header h1 {
-      font-size: 2.6rem; font-weight: bold; text-shadow: 0 0 23px #14e6f5;
-      margin: 0;
-    }
-    .profile-pic {
-      width: 55px; height: 55px; border-radius: 50%; border: 2.5px solid #14e6f5;
-      box-shadow: 0 0 14px #14e6f5b2; object-fit: cover;
-    }
-    .dashboard {
-      display: flex; gap: 2rem; margin: 2rem; flex-wrap: wrap;
-    }
-    nav.sidebar {
-      background: linear-gradient(180deg,#182b4a 70%,#14e6f5 180%);
-      width:230px; min-width:160px;
-      border-radius: 30px 0 30px 30px; box-shadow: 0 0 18px #14e6f5a1;
-      padding: 35px 22px; position: relative;
-    }
-    .sidebar ul {list-style: none; padding: 0; margin: 0;}
-    .sidebar li {margin-bottom: 14px;}
-    .sidebar button {
-      width: 100%; background: #0f172b; border: none;
-      color: #24fff6; padding: 16px; border-radius: 15px; font-size: 1.13rem;
-      font-weight:bold; margin-bottom: 9px; cursor: pointer; box-shadow: 0 0 12px #14e6f5a2, 0 0 3px #0ff0fc;
-      transition: all 0.17s;
-    }
-    .sidebar button:hover {
-      background: #14e6f5; color: #151f2e; box-shadow: 0 0 17px #0ff0fc99;
-    }
-    .theme-switch {
-      position: absolute; top: 22px; right: 20px; font-size: 1.09rem; color: #24fff6;
-    }
-    .theme-switch input[type=checkbox] {
-      accent-color: #14e6f5; cursor: pointer; width: 20px; height: 20px; margin-left:7px;
-    }
-    main.main-panel {
-      flex: 1 1 320px;
-      background: rgba(21, 31, 46, 0.90);
-      border-radius: 20px; box-shadow: 0 0 25px #14e6f5a3;
-      padding: 2rem; min-width: 320px;
-    }
-    .action-buttons {
-      margin: 2rem 0 1.3rem 0; display: flex; gap: 1.2rem; flex-wrap:wrap;
-    }
-    .action-buttons button {
-      background: linear-gradient(90deg,#0f55c0 70%,#14e6f5 110%);
-      color: #fff; border: none; border-radius: 12px; padding: 1rem 2rem; font-size: 1.13rem;
-      box-shadow: 0 0 13px #0ff0fca0; cursor: pointer; font-weight:bold; transition: all 0.19s; outline: none;
-    }
-    .action-buttons button:active {transform: scale(0.96); filter: brightness(0.88);}
-    .action-buttons button:hover {background: #14e6f5; color: #0f55c0;}
-    .game-list {margin-bottom: 2rem;}
-    .games {display: flex; gap: 1.3rem; flex-wrap: wrap;}
-    .game-card {
-      background: #131f39c7; border-radius: 14px; padding: 1rem; width: 140px; box-shadow:0 0 13px #14e6f5a2;
-      display: flex; flex-direction: column; align-items: center; margin-bottom:10px;
-    }
-    .game-card img {
-      width: 78px;height:78px; margin-bottom: 0.6rem; border-radius: 9px;
-      box-shadow: 0 0 8px #14e6f56f; object-fit: cover; border: 2px solid #14e6f5a5;
-    }
-    .game-card .game-title {
-      font-size: 1.09rem; color: #14e6f5; margin-bottom: 0.4rem; font-weight: bold;text-align: center;
-    }
-    .game-card .play-btn {
-      background: #0f55c0; color: #fff; border: none; border-radius: 9px; padding: 0.54rem 1.1rem;
-      cursor: pointer; transition: background 0.21s; margin-top: 0.3rem;
-    }
-    .game-card .play-btn:hover {background: #14e6f5; color: #0f55c0;}
-    .panel-section {margin-top: 2.1rem;}
-    .panel-title {
-      color: #14e6f5; font-size: 1.18rem; margin-bottom: 0.8rem; font-weight: bold;
-    }
-    .chat-box, .notify-box {
-      background: #10182d;
-      border-radius: 17px; margin-bottom: 1rem; box-shadow: 0 0 12px #14e6f516;
-      padding: 1rem; max-height: 150px; overflow-y: auto; font-size: 1.04rem;
-    }
-    .chat-message {margin-bottom: 8px;font-size:1.09rem;}
-    .notify-item {
-      padding: 7px 0 7px 16px; border-left: 3px solid #0ff0fc88; margin-bottom: 7px; color: #baf8ff;
-    }
-    .stats {
-      display: flex;gap:2.2rem;flex-wrap:wrap;justify-content:space-between;
-    }
-    .stat-card {
-      width: 170px; background: #182b4ac8; border-radius: 16px; text-align: center; box-shadow: 0 0 14px #14e6f5a1;
-      padding: 1.2rem 0.5rem; color: #baf8ff; margin-bottom: 1rem;
-    }
-    .stat-title {font-size: 1.06rem; margin-bottom: 0.3rem; color: #14e6f5;}
-    .stat-num {font-size: 1.18rem; font-weight: bold; margin-bottom: 0.2rem; color: #60eaff;}
-    .progress-container {
-      background: #151f2ecc; border-radius:10px; margin:1.1rem 0;height:22px;position:relative;overflow:hidden;width:90%;box-shadow:0 0 7px #0ff0fc44;margin-left:8px;
-    }
-    .progress-bar {
-      height: 100%; background: linear-gradient(90deg, #14e6f5 15%, #60eaff 90%);
-      width: 70%; border-radius: 10px; box-shadow: 0 0 7px #0ff0fc66;
-    }
-    /* Neon border effect */
-    main, nav, header {
-      border:2.7px solid #14e6f57a;
-      box-shadow:0 0 15px #14e6f579;
-    }
-    /* Responsive */
-    @media (max-width:900px){.dashboard{flex-direction:column;}.sidebar{width:100%;padding:18px;min-width:unset;margin-bottom:1.6rem;}.main-panel{padding:1.3rem;}}
+    body {margin:0;background:#151f2e;font-family:'Orbitron',Arial,sans-serif;color:#fff;transition:background .4s;}
+    .neon {text-shadow:0 0 12px #60eaff,0 0 20px #14e6f5;}
+    #login-box {width:350px;padding:30px 24px;background:#2a466a;border-radius:16px;box-shadow:0 0 21px #60eaff66;margin:auto;margin-top:80px;text-align:center;}
+    #login-box input,#login-box button {width:92%;margin-bottom:14px;padding:9px;border-radius:10px;border:none;}
+    #login-box button {background:#60eaff;color:#234a62;font-weight:bold;cursor:pointer;}
+    #dashboard {display:none;}
+    header {background:linear-gradient(90deg,#182b4a 70%,#14e6f5 120%);padding:19px 36px;display:flex;justify-content:space-between;align-items:center;border-bottom:2.2px solid #14e6f5;box-shadow:0 0 14px #14e6f599;}
+    header h1 {font-size:2.1rem;font-weight:bold;text-shadow:0 0 20px #14e6f5;margin:0;}
+    .profile-pic {width:38px;height:38px;border-radius:50%;border:2px solid #14e6f5;}
+    .dashboard {display:flex;gap:2rem;margin:2rem;flex-wrap:wrap;}
+    nav.sidebar {background:linear-gradient(180deg,#182b4a 80%,#14e6f5 180%);width:220px;min-width:140px;border-radius:27px 0 27px 27px;box-shadow:0 0 17px #14e6f5a1;padding:30px 20px;position:relative;}
+    .sidebar ul {list-style:none;padding:0;margin:0;}
+    .sidebar li {margin-bottom:13px;}
+    .sidebar button {width:100%;background:#0f172b;border:none;color:#24fff6;padding:13px;border-radius:13px;font-size:1.08rem;font-weight:bold;margin-bottom:7px;cursor:pointer;box-shadow:0 0 11px #14e6f570;transition:all .18s;}
+    .sidebar button:hover {background:#14e6f5;color:#151f2e;box-shadow:0 0 14px #0ff0fc99;}
+    .theme-switch {position:absolute;top:19px;right:22px;font-size:1.07rem;color:#24fff6;}
+    .theme-switch input[type=checkbox] {accent-color:#14e6f5;cursor:pointer;width:18px;height:18px;margin-left:8px;}
+    main.main-panel {flex:1 1 320px;background:rgba(21,31,46,.94);border-radius:17px;box-shadow:0 0 19px #14e6f5b1;padding:1.6rem;min-width:320px;}
+    .action-buttons {margin:1.3rem 0 1.1rem 0;display:flex;gap:1.3rem;flex-wrap:wrap;}
+    .action-buttons button {background:linear-gradient(90deg,#0f55c0 70%,#14e6f5 110%);color:#fff;border:none;border-radius:10px;padding:.8rem 1.7rem;font-size:1.08rem;box-shadow:0 0 10px #0ff0fca0;cursor:pointer;font-weight:bold;transition:.18s;}
+    .action-buttons button:hover {background:#14e6f5;color:#0f55c0;}
+    .game-list {margin-bottom:1.4rem;}
+    .games {display:flex;gap:1.1rem;flex-wrap:wrap;}
+    .game-card {background:#131f39db;border-radius:11px;padding:0.9rem;width:118px;box-shadow:0 0 11px #14e6f5a2;display:flex;flex-direction:column;align-items:center;margin-bottom:9px;}
+    .game-card img {width:66px;height:66px;margin-bottom:0.5rem;border-radius:7px;box-shadow:0 0 7px #14e6f579;border:2px solid #14e6f5;}
+    .game-card .game-title {font-size:1rem;color:#14e6f5;margin-bottom:0.28rem;font-weight:bold;text-align:center;}
+    .game-card .play-btn {background:#0f55c0;color:#fff;border:none;border-radius:8px;padding:0.38rem 1rem;cursor:pointer;transition:background 0.18s;margin-top:0.21rem;}
+    .game-card .play-btn:hover {background:#14e6f5;color:#0f55c0;}
+    .panel-title {color:#14e6f5;font-size:1.09rem;margin-bottom:0.7rem;font-weight:bold;}
+    .chat-box,.notify-box {background:#10182d;border-radius:14px;margin-bottom:0.95rem;box-shadow:0 0 10px #14e6f515;padding:.7rem;max-height:100px;overflow-y:auto;font-size:1rem;}
+    .chat-message {margin-bottom:7px;}
+    .notify-item {padding:6px 0 6px 13px;border-left:3px solid #0ff0fc88;margin-bottom:6px;color:#baf8ff;}
+    .stats {display:flex;gap:1.3rem;flex-wrap:wrap;justify-content:left;}
+    .stat-card {width:140px;background:#182b4ac9;border-radius:13px;text-align:center;box-shadow:0 0 13px #14e6f5b1;padding:0.8rem 0.27rem;color:#baf8ff;margin-bottom:1rem;}
+    .stat-title {font-size:.94rem;margin-bottom:0.19rem;color:#14e6f5;}
+    .stat-num {font-size:1rem;font-weight:bold;margin-bottom:0.11rem;color:#60eaff;}
+    .progress-container {background:#151f2ecc;border-radius:10px;margin:0.8rem 0;height:16px;position:relative;overflow:hidden;width:87%;box-shadow:0 0 5px #0ff0fc44;margin-left:7px;}
+    .progress-bar {height:100%;background:linear-gradient(90deg,#14e6f5 12%,#60eaff 90%);width:60%;border-radius:10px;box-shadow:0 0 5px #0ff0fc66;}
+    @media (max-width:900px){.dashboard{flex-direction:column;}.sidebar{width:100%;padding:12px;min-width:unset;margin-bottom:1.1rem;}.main-panel{padding:1.1rem;}}
   </style>
 </head>
 <body>
-  <header>
-    <h1 class="neon">GAMER DASHBOARD</h1>
-    <div>
-      <img src="https://avatars.githubusercontent.com/u/terminaluser.png" alt="profile" class="profile-pic">
-    </div>
-  </header>
-  <div class="dashboard">
-    <nav class="sidebar">
-      <div class="theme-switch">
-        حالت شب/روز
-        <input type="checkbox" id="themeToggle" />
+  <div id="login-box">
+    <h2 class="neon">ورود/عضویت داشبورد گیمینگ</h2>
+    <input type="text" id="username" placeholder="یوزرنیم" autocomplete="username">
+    <input type="password" id="password" placeholder="پسورد" autocomplete="current-password">
+    <button onclick="login()">ورود | ثبت‌نام</button>
+    <div id="login-msg"></div>
+  </div>
+  <div id="dashboard">
+    <header>
+      <h1 class="neon">GAMER DASHBOARD</h1>
+      <div>
+        <span id="userInfo"></span>
+        <img src="https://avatars.githubusercontent.com/u/terminaluser.png" alt="profile" class="profile-pic">
       </div>
-      <ul>
-        <li><button>خانه</button></li>
-        <li><button>بازی‌ها</button></li>
-        <li><button>تورنومنت‌ها</button></li>
-        <li><button>رتبه و جوایز</button></li>
-        <li><button>چت گیمرها</button></li>
-        <li><button>فروشگاه</button></li>
-        <li><button>پروفایل من</button></li>
-        <li><button>تنظیمات</button></li>
-      </ul>
-    </nav>
-    <main class="main-panel">
-      <section class="action-buttons">
-        <button>شروع بازی جدید</button>
-        <button>ساخت لابی اختصاصی</button>
-        <button>پرسش و پاسخ</button>
-        <button>ارسال پیام</button>
-        <button>دریافت جایزه روزانه</button>
-        <button>خرید اعتبار</button>
-      </section>
-      <section class="game-list">
-        <h2 class="neon">لیست بازی‌های پیشنهادی</h2>
-        <div class="games">
-          <div class="game-card">
-            <img src="https://upload.wikimedia.org/wikipedia/en/0/02/Minecraft_cover.png" alt="Minecraft">
-            <div class="game-title">Minecraft</div>
-            <button class="play-btn">ورود</button>
-          </div>
-          <div class="game-card">
-            <img src="https://i.imgur.com/xDU3G9Z.jpg" alt="Valorant">
-            <div class="game-title">Valorant</div>
-            <button class="play-btn">ورود</button>
-          </div>
-          <div class="game-card">
-            <img src="https://i.imgur.com/er5GiVn.png" alt="Rocket League">
-            <div class="game-title">Rocket League</div>
-            <button class="play-btn">ورود</button>
-          </div>
-          <div class="game-card">
-            <img src="https://i.imgur.com/ZaTfnYS.jpg" alt="FIFA 23">
-            <div class="game-title">FIFA 23</div>
-            <button class="play-btn">ورود</button>
-          </div>
+    </header>
+    <div class="dashboard">
+      <nav class="sidebar">
+        <div class="theme-switch">حالت شب/روز
+          <input type="checkbox" id="themeToggle" />
         </div>
-      </section>
-      <section class="panel-section">
-        <div class="panel-title">چت گیمرها</div>
-        <div class="chat-box">
-          <div class="chat-message neon">گیمر۱: سلام بچه‌ها!</div>
-          <div class="chat-message">Blazer: پایه مسابقه جدید هستم!</div>
-          <div class="chat-message">گیمر۲: عصر کی آنلاین میشه؟</div>
-        </div>
-        <div class="panel-title">اعلانات</div>
-        <div class="notify-box">
-          <div class="notify-item">مسابقه Valorant شروع شد!</div>
-          <div class="notify-item">۵۰٪ تخفیف در فروشگاه امروز!</div>
-          <div class="notify-item">آپدیت جدید برای Minecraft.</div>
-        </div>
-        <div class="panel-title">آمار و سطح عملکرد</div>
-        <div class="stats">
-          <div class="stat-card">
-            <div class="stat-title">رتبه کل</div>
-            <div class="stat-num">Platinum IV</div>
-            <div class="progress-container"><div class="progress-bar"></div></div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-title">امتیاز امروز</div>
-            <div class="stat-num">4120</div>
-            <div class="progress-container"><div class="progress-bar" style="width:85%"></div></div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-title">زمان بازی</div>
-            <div class="stat-num">8h</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-title">بازی انجام‌شده</div>
-            <div class="stat-num">13</div>
-          </div>
-        </div>
-      </section>
-    </main>
+        <ul>
+          <li><button onclick="showPage('home')">خانه</button></li>
+          <li><button onclick="showPage('games')">بازی‌ها</button></li>
+          <li><button onclick="showPage('tournaments')">تورنومنت‌ها</button></li>
+          <li><button onclick="showPage('rank')">رتبه و جوایز</button></li>
+          <li><button onclick="showPage('chat')">چت گیمرها</button></li>
+          <li><button onclick="showPage('shop')">فروشگاه</button></li>
+          <li><button onclick="showPage('profile')">پروفایل من</button></li>
+          <li><button onclick="showPage('settings')">تنظیمات</button></li>
+        </ul>
+      </nav>
+      <main class="main-panel" id="main-content">
+        <!-- محتوای اصلی به صورت داینامیک بارگذاری می‌شود -->
+      </main>
+    </div>
   </div>
   <script>
+    // داده‌های کاربر فعال
+    let currentUser = null, currentKey = null;
+    function getKey(u, p) {return btoa(u.trim()+"-"+p.trim());}
+    function login() {
+      let user = username.value.trim();
+      let pass = password.value.trim();
+      if (!user || !pass) return login_msg.innerText='یوزرنیم و پسورد الزامی است!';
+      let key = getKey(user, pass);
+      let userData = localStorage.getItem(key);
+      if (!userData) {
+        userData = JSON.stringify({
+          username:user,points:0,games:[],tournaments:[],rank:'Bronze',shop:[],chat:["خوش آمدی به چت!"],settings:{nightMode:false}
+        });
+        localStorage.setItem(key, userData);
+      }
+      currentUser = JSON.parse(localStorage.getItem(key));
+      currentKey = key;
+      dashboard.style.display='block';
+      login_box.style.display='none';
+      document.getElementById("userInfo").innerText = currentUser.username + " | امتیاز: " + currentUser.points;
+      showPage('home');
+      if(currentUser.settings.nightMode) {themeToggle.checked=true; document.body.style.background="#090b28";}
+      else {themeToggle.checked=false; document.body.style.background="#151f2e";}
+    }
+
+    // نمایش محتوای هر صفحه
+    function showPage(page) {
+      main_content.innerHTML = "";
+      if(page==='home'){
+        main_content.innerHTML = `
+          <section class='action-buttons'>
+            <button onclick="quickGame()">شروع بازی جدید</button>
+            <button onclick="createLobby()">ساخت لابی</button>
+            <button onclick="askQuestion()">پرسش و پاسخ</button>
+            <button onclick="sendMessage()">ارسال پیام</button>
+            <button onclick="dailyPrize()">دریافت جایزه روزانه</button>
+            <button onclick="addCredit()">خرید اعتبار</button>
+          </section>
+          <section class="game-list">
+            <h2 class="neon">لیست بازی‌های من</h2>
+            <div class="games">${currentUser.games.map((g,i)=>
+              `<div class='game-card'>
+                <img src='${g.img||"https://upload.wikimedia.org/wikipedia/en/0/02/Minecraft_cover.png"}'>
+                <div class='game-title'>${g.name||g}</div>
+                <button class="play-btn" onclick='playGame(${i})'>ورود</button>
+              </div>`
+            ).join('') || "<span style='color:#bfd7ff'>هنوز بازی ثبت نکرده‌ای!</span>"}
+              <div><button onclick='addGame()'>افزودن بازی جدید</button></div>
+            </div>
+          </section>
+          ${renderStats()}
+        `;
+      }
+      else if(page==='games'){
+        main_content.innerHTML = `
+          <h2 class="neon">بازی‌های قابل افزودن</h2>
+          <div class='games'>
+            ${[
+            {name:"Minecraft",img:"https://upload.wikimedia.org/wikipedia/en/0/02/Minecraft_cover.png"},
+            {name:"Valorant",img:"https://i.imgur.com/xDU3G9Z.jpg"},
+            {name:"Rocket League",img:"https://i.imgur.com/er5GiVn.png"},
+            {name:"FIFA 23",img:"https://i.imgur.com/ZaTfnYS.jpg"}
+            ].map((g,i)=>`<div class='game-card'><img src='${g.img}'><div class='game-title'>${g.name}</div>
+            <button class="play-btn" onclick='addPreGame(${i})'>افزودن</button></div>`).join("")}
+          </div>
+        `;
+      }
+      else if(page==='tournaments'){
+        main_content.innerHTML = `<h2 class="neon">تورنومنت‌ها</h2><ul>
+          ${currentUser.tournaments.map((t,i)=>
+            `<li>❤️ ${t.name} <button onclick='removeTournament(${i})'>حذف</button></li>`
+          ).join("") || "<span style='color:#bfd7ff'>هنوز تورنومنتی ثبت نکرده‌ای!</span>"}
+          <button onclick='addTournament()'>افزودن تورنومنت جدید</button>
+        </ul>`;
+      }
+      else if(page==='rank'){
+        main_content.innerHTML = `
+          <h2 class="neon">رتبه و جوایز</h2>
+          <div style="font-size:1.3rem;font-weight:bold;margin-bottom:16px;">رتبه فعلی: <span style="color:#14e6f5">${currentUser.rank}</span></div>
+          <button onclick="upgradeRank()">ارتقای رتبه</button>
+          <div style='margin-top:15px;'>امتیاز: ${currentUser.points}</div>
+        `;
+      }
+      else if(page==='chat'){
+        main_content.innerHTML = `
+          <div class="panel-title">چت گیمرها</div>
+          <div class="chat-box">${currentUser.chat.map(c=>`<div class='chat-message'>${c}</div>`).join("")}</div>
+          <input id='chatInput' placeholder="متن پیام...">
+          <button onclick='sendChatMessage()'>ارسال پیام</button>
+        `;
+      }
+      else if(page==='shop'){
+        main_content.innerHTML = `
+        <h2 class="neon">فروشگاه</h2>
+        <div>اعتبار کنونی: <b>${currentUser.points}</b></div>
+        <button onclick="buyItem('سکه طلایی',250)">خرید سکه طلایی (۲۵۰)</button>
+        <button onclick="buyItem('پوسته گیمینگ',500)">خرید پوسته گیمینگ (۵۰۰)</button>
+        <div>موارد خریداری‌شده: ${currentUser.shop.map(item=>`<span style='color:#14e6f5'>${item}</span>`).join(', ')||'نداری'}</div>
+        `;
+      }
+      else if(page==='profile'){
+        main_content.innerHTML = `
+        <h2 class="neon">پروفایل من</h2>
+        <div>یوزرنیم: <b>${currentUser.username}</b></div>
+        <div>امتیاز: ${currentUser.points}</div>
+        <div>تعداد بازی: ${currentUser.games.length}</div>
+        <div>تعداد تورنومنت: ${currentUser.tournaments.length}</div>
+        <div>آیتم‌های فروشگاه: ${currentUser.shop.length}</div>
+        <button onclick='logout()'>خروج</button>
+        `;
+      }
+      else if(page==='settings'){
+        main_content.innerHTML = `
+          <h2 class="neon">تنظیمات</h2>
+          <label><input type="checkbox" id="nightModeSetting" ${currentUser.settings.nightMode?"checked":""} onchange="toggleNightModeSetting()"> فعال‌سازی حالت شب</label>
+        `;
+      }
+    }
+    // توابع عملیاتی
+    function addGame() {
+      let n = prompt('نام بازی را وارد کن:');
+      if(!n) return;
+      currentUser.games.push({name:n,img:""});
+      saveUser();
+      showPage('home');
+    }
+    function addPreGame(idx) {
+      let games = [
+        {name:"Minecraft",img:"https://upload.wikimedia.org/wikipedia/en/0/02/Minecraft_cover.png"},
+        {name:"Valorant",img:"https://i.imgur.com/xDU3G9Z.jpg"},
+        {name:"Rocket League",img:"https://i.imgur.com/er5GiVn.png"},
+        {name:"FIFA 23",img:"https://i.imgur.com/ZaTfnYS.jpg"}
+      ];
+      currentUser.games.push(games[idx]);
+      saveUser();
+      showPage('games');
+    }
+    function playGame(idx) {
+      alert("🎮 وارد بازی "+(currentUser.games[idx].name||currentUser.games[idx])+" شدی! امتیاز +۵۰");
+      currentUser.points += 50; saveUser();
+      document.getElementById("userInfo").innerText = currentUser.username + " | امتیاز: " + currentUser.points;
+      showPage('home');
+    }
+    function createLobby() {alert("یک لابی ساختی! در بخش تورنومنت‌ها اضافه شد."); currentUser.tournaments.push({name:"لا‌بی جدید"});saveUser();showPage('tournaments');}
+    function askQuestion() {let q = prompt("سؤالت را بنویس:");if(q){alert("سؤال ثبت شد!");}}
+    function sendMessage() {let m = prompt("پیام خودت رو بنویس:");if(m){currentUser.chat.push(currentUser.username+": "+m);saveUser();showPage('chat');}}
+    function dailyPrize() {if(!currentUser._gotPrize){alert("تخفیف یا امتیاز روزانه گرفتی!");currentUser.points+=100;currentUser._gotPrize=true;saveUser();document.getElementById("userInfo").innerText = currentUser.username + " | امتیاز: " + currentUser.points;}}
+    function addCredit() {let v = prompt("مقدار اعتبار اضافه کن:");if(v && !isNaN(v)){currentUser.points+=parseInt(v,10);saveUser();document.getElementById("userInfo").innerText = currentUser.username + " | امتیاز: " + currentUser.points;}}
+    function addTournament() {let t = prompt("نام تورنومنت را وارد کن:");if(t){currentUser.tournaments.push({name:t});saveUser();showPage('tournaments');}}
+    function removeTournament(idx){currentUser.tournaments.splice(idx,1);saveUser();showPage('tournaments');}
+    function upgradeRank(){if(currentUser.points>=1000){currentUser.rank='Platinum';alert("رتبه ارتقا یافت!");saveUser();showPage('rank');}else{alert("امتیاز کافی نیست!");}}
+    function buyItem(item,price){if(currentUser.points>=price){currentUser.points-=price;currentUser.shop.push(item);saveUser();alert("خرید انجام شد!");showPage('shop');}else{alert("اعتبار کافی نیست!");}}
+    function sendChatMessage(){let x = chatInput.value.trim();if(x){currentUser.chat.push(currentUser.username+": "+x);chatInput.value="";saveUser();showPage('chat');}}
+    function toggleNightModeSetting(){currentUser.settings.nightMode=document.getElementById("nightModeSetting").checked;saveUser();if(currentUser.settings.nightMode){document.body.style.background="#090b28";}else{document.body.style.background="#151f2e";}}
+    function logout(){currentUser=null;currentKey=null;dashboard.style.display="none";login_box.style.display="block";login_msg.innerText="خارج شدید.";}
+    function saveUser(){localStorage.setItem(currentKey,JSON.stringify(currentUser));}
+    function renderStats(){return `<div class="panel-title">آمار و سطح عملکرد</div>
+      <div class="stats">
+        <div class="stat-card">
+          <div class="stat-title">رتبه</div>
+          <div class="stat-num">${currentUser.rank||'Bronze'}</div>
+          <div class="progress-container"><div class="progress-bar" style="width:${Math.min((currentUser.points||0)/10,90)}%"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">امتیاز</div>
+          <div class="stat-num">${currentUser.points}</div>
+          <div class="progress-container"><div class="progress-bar" style="width:${Math.min((currentUser.points||0)/20,93)}%"></div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">تعداد بازی</div>
+          <div class="stat-num">${currentUser.games.length}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">تورنومنت‌های من</div>
+          <div class="stat-num">${currentUser.tournaments.length}</div>
+        </div>
+      </div>`;
+    }
+    // سوییچ شب/روز کلی سایت
     const themeToggle = document.getElementById('themeToggle');
-    themeToggle.addEventListener('change', function() {
-      document.body.style.background = this.checked ?
-        "radial-gradient(circle at 50% 0%, #090b28 52%, #0c114a 100%)" :
-        "#151f2e";
+    if(themeToggle) themeToggle.addEventListener('change', function() {
+      if(!currentUser) return;
+      currentUser.settings.nightMode = themeToggle.checked; saveUser();
+      document.body.style.background = themeToggle.checked ? "#090b28" : "#151f2e";
     });
   </script>
 </body>
