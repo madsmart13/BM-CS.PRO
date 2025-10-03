@@ -1,613 +1,237 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BM CS - CS:GO Skins Platform</title>
-    <style>
-        body {
-            background-color: #0a0a0a;
-            color: #e0e0e0;
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal {
-            background: #1c1c1c;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 0 30px rgba(0, 255, 128, 0.6);
-            max-width: 400px;
-        }
-        .modal button, .btn {
-            background: linear-gradient(45deg, #00ff7f, #00bfff);
-            color: #000;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: transform 0.2s;
-        }
-        .modal button:hover, .btn:hover {
-            transform: scale(1.05);
-        }
-        header {
-            background: #222;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #00ff7f;
-        }
-        nav {
-            display: flex;
-        }
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            transition: background 0.3s;
-        }
-        nav a:hover {
-            background: #333;
-        }
-        .user-info {
-            display: flex;
-            align-items: center;
-        }
-        .user-info img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
-        .user-info span {
-            margin-right: 20px;
-        }
-        .section {
-            display: none;
-            padding: 30px;
-            animation: fadeIn 0.5s;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        #home {
-            display: block;
-            text-align: center;
-        }
-        .cases-grid, .shop-grid, .inventory-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-        }
-        .case-item, .shop-item, .inventory-item {
-            background: #282828;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 0 15px rgba(0,255,128,0.4);
-        }
-        .case-item img, .shop-item img, .inventory-item img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-        }
-        .battles-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .battle-item {
-            background: #333;
-            padding: 20px;
-            border-radius: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .gaming-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, #000, #111);
-            opacity: 0.8;
-            z-index: -1;
-            animation: pulse 5s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 0.6; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Neon Gaming Dashboard</title>
+  <meta name="viewport" content="width=1000, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Orbitron:700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0; background: #151f2e; font-family: 'Orbitron', Arial, sans-serif; color: #fff;
+      transition: background 0.5s;
+    }
+    .neon {
+      text-shadow:
+        0 0 10px #60eaff,
+        0 0 20px #14e6f5,
+        0 0 25px #0ff0fc,
+        0 0 35px #14e6f5;
+      color: #60eaff;
+    }
+    header {
+      background: linear-gradient(90deg,#182b4a 70%,#14e6f5 120%);
+      padding: 24px 36px; color: #14e6f5; display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 2.5px solid #14e6f5;
+      box-shadow: 0 0 18px #14e6f5a0;
+    }
+    header h1 {
+      font-size: 2.6rem; font-weight: bold; text-shadow: 0 0 23px #14e6f5;
+      margin: 0;
+    }
+    .profile-pic {
+      width: 55px; height: 55px; border-radius: 50%; border: 2.5px solid #14e6f5;
+      box-shadow: 0 0 14px #14e6f5b2; object-fit: cover;
+    }
+    .dashboard {
+      display: flex; gap: 2rem; margin: 2rem; flex-wrap: wrap;
+    }
+    nav.sidebar {
+      background: linear-gradient(180deg,#182b4a 70%,#14e6f5 180%);
+      width:230px; min-width:160px;
+      border-radius: 30px 0 30px 30px; box-shadow: 0 0 18px #14e6f5a1;
+      padding: 35px 22px; position: relative;
+    }
+    .sidebar ul {list-style: none; padding: 0; margin: 0;}
+    .sidebar li {margin-bottom: 14px;}
+    .sidebar button {
+      width: 100%; background: #0f172b; border: none;
+      color: #24fff6; padding: 16px; border-radius: 15px; font-size: 1.13rem;
+      font-weight:bold; margin-bottom: 9px; cursor: pointer; box-shadow: 0 0 12px #14e6f5a2, 0 0 3px #0ff0fc;
+      transition: all 0.17s;
+    }
+    .sidebar button:hover {
+      background: #14e6f5; color: #151f2e; box-shadow: 0 0 17px #0ff0fc99;
+    }
+    .theme-switch {
+      position: absolute; top: 22px; right: 20px; font-size: 1.09rem; color: #24fff6;
+    }
+    .theme-switch input[type=checkbox] {
+      accent-color: #14e6f5; cursor: pointer; width: 20px; height: 20px; margin-left:7px;
+    }
+    main.main-panel {
+      flex: 1 1 320px;
+      background: rgba(21, 31, 46, 0.90);
+      border-radius: 20px; box-shadow: 0 0 25px #14e6f5a3;
+      padding: 2rem; min-width: 320px;
+    }
+    .action-buttons {
+      margin: 2rem 0 1.3rem 0; display: flex; gap: 1.2rem; flex-wrap:wrap;
+    }
+    .action-buttons button {
+      background: linear-gradient(90deg,#0f55c0 70%,#14e6f5 110%);
+      color: #fff; border: none; border-radius: 12px; padding: 1rem 2rem; font-size: 1.13rem;
+      box-shadow: 0 0 13px #0ff0fca0; cursor: pointer; font-weight:bold; transition: all 0.19s; outline: none;
+    }
+    .action-buttons button:active {transform: scale(0.96); filter: brightness(0.88);}
+    .action-buttons button:hover {background: #14e6f5; color: #0f55c0;}
+    .game-list {margin-bottom: 2rem;}
+    .games {display: flex; gap: 1.3rem; flex-wrap: wrap;}
+    .game-card {
+      background: #131f39c7; border-radius: 14px; padding: 1rem; width: 140px; box-shadow:0 0 13px #14e6f5a2;
+      display: flex; flex-direction: column; align-items: center; margin-bottom:10px;
+    }
+    .game-card img {
+      width: 78px;height:78px; margin-bottom: 0.6rem; border-radius: 9px;
+      box-shadow: 0 0 8px #14e6f56f; object-fit: cover; border: 2px solid #14e6f5a5;
+    }
+    .game-card .game-title {
+      font-size: 1.09rem; color: #14e6f5; margin-bottom: 0.4rem; font-weight: bold;text-align: center;
+    }
+    .game-card .play-btn {
+      background: #0f55c0; color: #fff; border: none; border-radius: 9px; padding: 0.54rem 1.1rem;
+      cursor: pointer; transition: background 0.21s; margin-top: 0.3rem;
+    }
+    .game-card .play-btn:hover {background: #14e6f5; color: #0f55c0;}
+    .panel-section {margin-top: 2.1rem;}
+    .panel-title {
+      color: #14e6f5; font-size: 1.18rem; margin-bottom: 0.8rem; font-weight: bold;
+    }
+    .chat-box, .notify-box {
+      background: #10182d;
+      border-radius: 17px; margin-bottom: 1rem; box-shadow: 0 0 12px #14e6f516;
+      padding: 1rem; max-height: 150px; overflow-y: auto; font-size: 1.04rem;
+    }
+    .chat-message {margin-bottom: 8px;font-size:1.09rem;}
+    .notify-item {
+      padding: 7px 0 7px 16px; border-left: 3px solid #0ff0fc88; margin-bottom: 7px; color: #baf8ff;
+    }
+    .stats {
+      display: flex;gap:2.2rem;flex-wrap:wrap;justify-content:space-between;
+    }
+    .stat-card {
+      width: 170px; background: #182b4ac8; border-radius: 16px; text-align: center; box-shadow: 0 0 14px #14e6f5a1;
+      padding: 1.2rem 0.5rem; color: #baf8ff; margin-bottom: 1rem;
+    }
+    .stat-title {font-size: 1.06rem; margin-bottom: 0.3rem; color: #14e6f5;}
+    .stat-num {font-size: 1.18rem; font-weight: bold; margin-bottom: 0.2rem; color: #60eaff;}
+    .progress-container {
+      background: #151f2ecc; border-radius:10px; margin:1.1rem 0;height:22px;position:relative;overflow:hidden;width:90%;box-shadow:0 0 7px #0ff0fc44;margin-left:8px;
+    }
+    .progress-bar {
+      height: 100%; background: linear-gradient(90deg, #14e6f5 15%, #60eaff 90%);
+      width: 70%; border-radius: 10px; box-shadow: 0 0 7px #0ff0fc66;
+    }
+    /* Neon border effect */
+    main, nav, header {
+      border:2.7px solid #14e6f57a;
+      box-shadow:0 0 15px #14e6f579;
+    }
+    /* Responsive */
+    @media (max-width:900px){.dashboard{flex-direction:column;}.sidebar{width:100%;padding:18px;min-width:unset;margin-bottom:1.6rem;}.main-panel{padding:1.3rem;}}
+  </style>
 </head>
 <body>
-    <div class="gaming-bg"></div>
-    <div id="steam-link-overlay" class="overlay">
-        <div class="modal">
-            <p>You must link your Steam account to access BM CS.</p>
-            <a id="steam-login-link" href="https://steamcommunity.com/openid/login?openid.mode=checkid_setup&openid.ns=http://specs.openid.net/auth/2.0&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.return_to=https://madsmart13.github.io/BM-CS.PRO/auth/steam/callback">
-                <button class="btn">Link Steam Account</button>
-            </a>
-            <p>Note: This simulates Steam OpenID login. For real auth, set up a server for the callback.</p>
-        </div>
+  <header>
+    <h1 class="neon">GAMER DASHBOARD</h1>
+    <div>
+      <img src="https://avatars.githubusercontent.com/u/terminaluser.png" alt="profile" class="profile-pic">
     </div>
-
-    <header>
-        <div class="logo">BM CS</div>
-        <nav>
-            <a href="#cases" onclick="showSection('cases')">Cases</a>
-            <a href="#battles" onclick="showSection('battles')">Battles</a>
-            <a href="#shop" onclick="showSection('shop')">Shop</a>
-            <a href="#upgrade" onclick="showSection('upgrade')">Upgrade</a>
-            <a href="#affiliates" onclick="showSection('affiliates')">Affiliates</a>
-            <a href="#inventory" onclick="showSection('inventory')">Inventory</a>
-            <a href="#account" onclick="showSection('account')">Account</a>
-            <a href="#support" onclick="showSection('support')">Support</a>
-        </nav>
-        <div class="user-info">
-            <img id="user-avatar" src="https://via.placeholder.com/40?text=?" alt="Avatar">
-            <span id="user-name">Guest</span>
-            <span>Balance: <span id="wallet-balance">0.00</span> USD</span>
-            <button class="btn" onclick="showDepositModal()">Deposit</button>
+  </header>
+  <div class="dashboard">
+    <nav class="sidebar">
+      <div class="theme-switch">
+        حالت شب/روز
+        <input type="checkbox" id="themeToggle" />
+      </div>
+      <ul>
+        <li><button>خانه</button></li>
+        <li><button>بازی‌ها</button></li>
+        <li><button>تورنومنت‌ها</button></li>
+        <li><button>رتبه و جوایز</button></li>
+        <li><button>چت گیمرها</button></li>
+        <li><button>فروشگاه</button></li>
+        <li><button>پروفایل من</button></li>
+        <li><button>تنظیمات</button></li>
+      </ul>
+    </nav>
+    <main class="main-panel">
+      <section class="action-buttons">
+        <button>شروع بازی جدید</button>
+        <button>ساخت لابی اختصاصی</button>
+        <button>پرسش و پاسخ</button>
+        <button>ارسال پیام</button>
+        <button>دریافت جایزه روزانه</button>
+        <button>خرید اعتبار</button>
+      </section>
+      <section class="game-list">
+        <h2 class="neon">لیست بازی‌های پیشنهادی</h2>
+        <div class="games">
+          <div class="game-card">
+            <img src="https://upload.wikimedia.org/wikipedia/en/0/02/Minecraft_cover.png" alt="Minecraft">
+            <div class="game-title">Minecraft</div>
+            <button class="play-btn">ورود</button>
+          </div>
+          <div class="game-card">
+            <img src="https://i.imgur.com/xDU3G9Z.jpg" alt="Valorant">
+            <div class="game-title">Valorant</div>
+            <button class="play-btn">ورود</button>
+          </div>
+          <div class="game-card">
+            <img src="https://i.imgur.com/er5GiVn.png" alt="Rocket League">
+            <div class="game-title">Rocket League</div>
+            <button class="play-btn">ورود</button>
+          </div>
+          <div class="game-card">
+            <img src="https://i.imgur.com/ZaTfnYS.jpg" alt="FIFA 23">
+            <div class="game-title">FIFA 23</div>
+            <button class="play-btn">ورود</button>
+          </div>
         </div>
-    </header>
-
-    <section id="cases" class="section">
-        <h2>Cases</h2>
-        <div class="cases-grid">
-            <div class="case-item">
-                <img src="https://via.placeholder.com/200x300?text=Low+Case" alt="Low Case">
-                <h3>Low Case</h3>
-                <p>Cost: 0.99 USD</p>
-                <button class="btn" onclick="openCase('low')">Open Case</button>
-            </div>
-            <div class="case-item">
-                <img src="https://via.placeholder.com/200x300?text=Mid+Case" alt="Mid Case">
-                <h3>Mid Case</h3>
-                <p>Cost: 4.99 USD</p>
-                <button class="btn" onclick="openCase('mid')">Open Case</button>
-            </div>
-            <div class="case-item">
-                <img src="https://via.placeholder.com/200x300?text=High+Case" alt="High Case">
-                <h3>High Case</h3>
-                <p>Cost: 9.99 USD</p>
-                <button class="btn" onclick="openCase('high')">Open Case</button>
-            </div>
+      </section>
+      <section class="panel-section">
+        <div class="panel-title">چت گیمرها</div>
+        <div class="chat-box">
+          <div class="chat-message neon">گیمر۱: سلام بچه‌ها!</div>
+          <div class="chat-message">Blazer: پایه مسابقه جدید هستم!</div>
+          <div class="chat-message">گیمر۲: عصر کی آنلاین میشه؟</div>
         </div>
-    </section>
-
-    <section id="battles" class="section">
-        <h2>Battles</h2>
-        <button class="btn" onclick="createBattle()">Create Battle</button>
-        <div class="battles-list">
-            <div class="battle-item">
-                <span>Battle #123 - 2 Players - Pot: 50 USD</span>
-                <button class="btn" onclick="joinBattle(123)">Join</button>
-            </div>
-            <div class="battle-item">
-                <span>Battle #124 - 4 Players - Pot: 100 USD</span>
-                <button class="btn" onclick="joinBattle(124)">Join</button>
-            </div>
+        <div class="panel-title">اعلانات</div>
+        <div class="notify-box">
+          <div class="notify-item">مسابقه Valorant شروع شد!</div>
+          <div class="notify-item">۵۰٪ تخفیف در فروشگاه امروز!</div>
+          <div class="notify-item">آپدیت جدید برای Minecraft.</div>
         </div>
-    </section>
-
-    <section id="shop" class="section">
-        <h2>Shop</h2>
-        <div class="shop-grid">
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_full_throttle_light_large.1f1f1f1f.png" alt="M4A4 | Full Throttle" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>M4A4 | Full Throttle</h3>
-                <p>Price: 5.00 USD</p>
-                <button class="btn" onclick="buyItem({'name':'M4A4 | Full Throttle', 'price':5.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_full_throttle_light_large.1f1f1f1f.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_the_oligarch_light_large.2f2f2f2f.png" alt="AK-47 | The Oligarch" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>AK-47 | The Oligarch</h3>
-                <p>Price: 10.00 USD</p>
-                <button class="btn" onclick="buyItem({'name':'AK-47 | The Oligarch', 'price':10.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_the_oligarch_light_large.2f2f2f2f.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_liquidation_light_large.3f3f3f3f.png" alt="M4A1-S | Liquidation" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>M4A1-S | Liquidation</h3>
-                <p>Price: 15.00 USD</p>
-                <button class="btn" onclick="buyItem({'name':'M4A1-S | Liquidation', 'price':15.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_liquidation_light_large.3f3f3f3f.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_aug_cu_aug_trigger_discipline_light_large.4f4f4f4f.png" alt="AUG | Trigger Discipline" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>AUG | Trigger Discipline</h3>
-                <p>Price: 20.00 USD</p>
-                <button class="btn" onclick="buyItem({'name':'AUG | Trigger Discipline', 'price':20.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_aug_cu_aug_trigger_discipline_light_large.4f4f4f4f.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_eye_of_horus_light_large.5f5f5f5f.png" alt="M4A4 | Eye of Horus" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>M4A4 | Eye of Horus</h3>
-                <p>Price: 134.85 USD</p>
-                <button class="btn" onclick="buyItem({'name':'M4A4 | Eye of Horus', 'price':134.85, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_eye_of_horus_light_large.5f5f5f5f.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_inheritance_light_large.6f6f6f6f.png" alt="AK-47 | Inheritance" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>AK-47 | Inheritance</h3>
-                <p>Price: 51.49 USD</p>
-                <button class="btn" onclick="buyItem({'name':'AK-47 | Inheritance', 'price':51.49, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_inheritance_light_large.6f6f6f6f.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_famas_cu_famas_waters_of_nephthys_light_large.7f7f7f7f.png" alt="FAMAS | Waters of Nephthys" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>FAMAS | Waters of Nephthys</h3>
-                <p>Price: 32.37 USD</p>
-                <button class="btn" onclick="buyItem({'name':'FAMAS | Waters of Nephthys', 'price':32.37, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_famas_cu_famas_waters_of_nephthys_light_large.7f7f7f7f.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_printstream_light_large.8f8f8f8f.png" alt="M4A1-S | Printstream" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>M4A1-S | Printstream</h3>
-                <p>Price: 193.51 USD</p>
-                <button class="btn" onclick="buyItem({'name':'M4A1-S | Printstream', 'price':193.51, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_printstream_light_large.8f8f8f8f.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_leet_museo_light_large.9f9f9f9f.png" alt="AK-47 | Leet Museo" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>AK-47 | Leet Museo</h3>
-                <p>Price: 42.00 USD</p>
-                <button class="btn" onclick="buyItem({'name':'AK-47 | Leet Museo', 'price':42.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_leet_museo_light_large.9f9f9f9f.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_temukau_light_large.0f0f0f0f.png" alt="M4A4 | Temukau" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>M4A4 | Temukau</h3>
-                <p>Price: 5.46 USD</p>
-                <button class="btn" onclick="buyItem({'name':'M4A4 | Temukau', 'price':5.46, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_temukau_light_large.0f0f0f0f.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_panthera_onca_light_large.1e1e1e1e.png" alt="AK-47 | Panthera Onca" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>AK-47 | Panthera Onca</h3>
-                <p>Price: 148.08 USD</p>
-                <button class="btn" onclick="buyItem({'name':'AK-47 | Panthera Onca', 'price':148.08, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_panthera_onca_light_large.1e1e1e1e.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_blue_phosphor_light_large.2e2e2e2e.png" alt="M4A1-S | Blue Phosphor" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>M4A1-S | Blue Phosphor</h3>
-                <p>Price: 975.45 USD</p>
-                <button class="btn" onclick="buyItem({'name':'M4A1-S | Blue Phosphor', 'price':975.45, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_blue_phosphor_light_large.2e2e2e2e.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_black_lotus_light_large.3e3e3e3e.png" alt="M4A1-S | Black Lotus" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>M4A1-S | Black Lotus</h3>
-                <p>Price: 7.84 USD</p>
-                <button class="btn" onclick="buyItem({'name':'M4A1-S | Black Lotus', 'price':7.84, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_black_lotus_light_large.3e3e3e3e.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_xray_light_large.4e4e4e4e.png" alt="AK-47 | X-Ray" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>AK-47 | X-Ray</h3>
-                <p>Price: 367.61 USD</p>
-                <button class="btn" onclick="buyItem({'name':'AK-47 | X-Ray', 'price':367.61, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_xray_light_large.4e4e4e4e.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_wild_lotus_light_large.5e5e5e5e.png" alt="AK-47 | Wild Lotus" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>AK-47 | Wild Lotus</h3>
-                <p>Price: 3899.00 USD</p>
-                <button class="btn" onclick="buyItem({'name':'AK-47 | Wild Lotus', 'price':3899.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_wild_lotus_light_large.5e5e5e5e.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_head_shot_light_large.6e6e6e6e.png" alt="AK-47 | Head Shot" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>AK-47 | Head Shot</h3>
-                <p>Price: 3.89 USD</p>
-                <button class="btn" onclick="buyItem({'name':'AK-47 | Head Shot', 'price':3.89, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_head_shot_light_large.6e6e6e6e.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_player_two_light_large.7e7e7e7e.png" alt="M4A1-S | Player Two" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>M4A1-S | Player Two</h3>
-                <p>Price: 15.00 USD</p>
-                <button class="btn" onclick="buyItem({'name':'M4A1-S | Player Two', 'price':15.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_silencer_cu_m4a1_s_player_two_light_large.7e7e7e7e.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_vulcan_light_large.8e8e8e8e.png" alt="AK-47 | Vulcan" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>AK-47 | Vulcan</h3>
-                <p>Price: 200.00 USD</p>
-                <button class="btn" onclick="buyItem({'name':'AK-47 | Vulcan', 'price':200.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_vulcan_light_large.8e8e8e8e.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_redline_light_large.9e9e9e9e.png" alt="AK-47 | Redline" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>AK-47 | Redline</h3>
-                <p>Price: 10.00 USD</p>
-                <button class="btn" onclick="buyItem({'name':'AK-47 | Redline', 'price':10.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_ak47_cu_ak47_redline_light_large.9e9e9e9e.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_asiimov_light_large.0e0e0e0e.png" alt="M4A4 | Asiimov" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>M4A4 | Asiimov</h3>
-                <p>Price: 100.00 USD</p>
-                <button class="btn" onclick="buyItem({'name':'M4A4 | Asiimov', 'price':100.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_asiimov_light_large.0e0e0e0e.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_awp_cu_awp_dragon_lore_light_large.1d1d1d1d.png" alt="AWP | Dragon Lore" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>AWP | Dragon Lore</h3>
-                <p>Price: 5000.00 USD</p>
-                <button class="btn" onclick="buyItem({'name':'AWP | Dragon Lore', 'price':5000.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_awp_cu_awp_dragon_lore_light_large.1d1d1d1d.png'})">Buy</button>
-            </div>
-            <div class="shop-item">
-                <img src="https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_howl_light_large.2d2d2d2d.png" alt="M4A4 | Howl" onerror="this.src='https://via.placeholder.com/200?text=Skin'">
-                <h3>M4A4 | Howl</h3>
-                <p>Price: 3000.00 USD</p>
-                <button class="btn" onclick="buyItem({'name':'M4A4 | Howl', 'price':3000.00, 'img':'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_howl_light_large.2d2d2d2d.png'})">Buy</button>
-            </div>
+        <div class="panel-title">آمار و سطح عملکرد</div>
+        <div class="stats">
+          <div class="stat-card">
+            <div class="stat-title">رتبه کل</div>
+            <div class="stat-num">Platinum IV</div>
+            <div class="progress-container"><div class="progress-bar"></div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-title">امتیاز امروز</div>
+            <div class="stat-num">4120</div>
+            <div class="progress-container"><div class="progress-bar" style="width:85%"></div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-title">زمان بازی</div>
+            <div class="stat-num">8h</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-title">بازی انجام‌شده</div>
+            <div class="stat-num">13</div>
+          </div>
         </div>
-    </section>
-
-    <section id="upgrade" class="section">
-        <h2>Upgrade</h2>
-        <p>Upgrade your skins here.</p>
-    </section>
-
-    <section id="affiliates" class="section">
-        <h2>Affiliates</h2>
-        <p>Refer friends and earn rewards.</p>
-    </section>
-
-    <section id="inventory" class="section">
-        <h2>Inventory</h2>
-        <div id="inventory-grid" class="inventory-grid"></div>
-        <button class="btn" id="withdraw-btn" disabled>Withdraw and Transfer to Account</button>
-    </section>
-
-    <section id="account" class="section">
-        <h2>Account</h2>
-        <p>Steam Username: <span id="steam-username">Not Linked</span></p>
-        <p>Steam Avatar: <img id="steam-avatar" src="https://via.placeholder.com/100?text=?" alt="Avatar" style="width:100px; border-radius:50%;"></p>
-        <p>Steam Profile URL: <span id="steam-profile"></span></p>
-    </section>
-
-    <section id="support" class="section">
-        <h2>Support</h2>
-        <p>Contact us for any issues or inquiries.</p>
-        <a href="mailto:bm.pro.ir@gmail.com" class="btn">Email Support: bm.pro.ir@gmail.com</a>
-    </section>
-
-    <div id="deposit-modal" style="display:none;" class="overlay">
-        <div class="modal">
-            <h3>Deposit to Wallet</h3>
-            <p>Your inventory must be public!</p>
-            <p>Send skins via trade to charge your balance.</p>
-            <a href="https://steamcommunity.com/tradeoffer/new/?partner=1445094693&token=CI12hRuH" target="_blank" class="btn">Send Trade</a>
-            <p>Contact support after sending to confirm and credit your wallet.</p>
-            <button class="btn" onclick="closeDepositModal()">Close</button>
-        </div>
-    </div>
-
-    <div id="win-modal" style="display:none;" class="overlay">
-        <div class="modal">
-            <h3>You Won!</h3>
-            <p id="win-skin"></p>
-            <button class="btn" onclick="sellWin()">Sell</button>
-            <button class="btn" onclick="addToInventoryWin()">Add to Inventory</button>
-            <button class="btn" onclick="closeWinModal()">Close</button>
-        </div>
-    </div>
-
-    <div id="withdraw-modal" style="display:none;" class="overlay">
-        <div class="modal">
-            <p>Message support for transfer (time: 1 hour to 1 day)</p>
-            <p>Your random code: <span id="random-code"></span></p>
-            <button class="btn" onclick="closeWithdrawModal()">Close</button>
-        </div>
-    </div>
-
-    <script>
-        const STEAM_API_KEY = 'DCC2C2C5C66A1BFD9F141D31663AD1D1';
-        const TRADE_LINK = 'https://steamcommunity.com/tradeoffer/new/?partner=1445094693&token=CI12hRuH';
-        let linkedSteam = localStorage.getItem('linkedSteam') === 'true' || false;
-        let walletBalance = parseFloat(localStorage.getItem('walletBalance')) || 0;
-        let inventory = JSON.parse(localStorage.getItem('inventory')) || [];
-        let steamInfo = JSON.parse(localStorage.getItem('steamInfo')) || { username: 'Guest', avatar: 'https://via.placeholder.com/40?text=?', profile: '', steamid: '' };
-
-        if (!linkedSteam) {
-            document.getElementById('steam-link-overlay').style.display = 'flex';
-        } else {
-            updateUserInfo();
-            loadInventory();
-        }
-
-        // Simulate Steam OpenID login return (no server, so we mock the callback)
-        const urlParams = new URLSearchParams(window.location.search);
-        const steamid = urlParams.get('openid.identity')?.match(/\/id\/(\d+)/)?.[1];
-        if (steamid && !linkedSteam) {
-            fetchSteamInfo(steamid);
-        }
-
-        document.getElementById('steam-login-link').href = `https://steamcommunity.com/openid/login?openid.mode=checkid_setup&openid.ns=http://specs.openid.net/auth/2.0&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.return_to=https://madsmart13.github.io/BM-CS.PRO/auth/steam/callback`;
-
-        function fetchSteamInfo(steamid) {
-            // Simulate Steam API response (since GitHub Pages can't handle real callbacks)
-            const mockResponse = {
-                response: {
-                    players: [{
-                        steamid: steamid,
-                        personaname: 'BMUser_' + steamid.slice(-4),
-                        avatarfull: 'https://via.placeholder.com/100?text=' + steamid.slice(-4),
-                        profileurl: 'https://steamcommunity.com/profiles/' + steamid
-                    }]
-                }
-            };
-            const player = mockResponse.response.players[0];
-            linkedSteam = true;
-            localStorage.setItem('linkedSteam', 'true');
-            steamInfo = {
-                username: player.personaname,
-                avatar: player.avatarfull,
-                profile: player.profileurl,
-                steamid: player.steamid
-            };
-            localStorage.setItem('steamInfo', JSON.stringify(steamInfo));
-            document.getElementById('steam-link-overlay').style.display = 'none';
-            updateUserInfo();
-            loadInventory();
-            // Clear URL params
-            window.history.replaceState({}, document.title, 'https://madsmart13.github.io/BM-CS.PRO/');
-        }
-
-        function updateUserInfo() {
-            document.getElementById('user-name').innerText = steamInfo.username;
-            document.getElementById('user-avatar').src = steamInfo.avatar;
-            document.getElementById('wallet-balance').innerText = walletBalance.toFixed(2);
-            document.getElementById('steam-username').innerText = steamInfo.username;
-            document.getElementById('steam-avatar').src = steamInfo.avatar;
-            document.getElementById('steam-profile').innerText = steamInfo.profile;
-        }
-
-        function showSection(sectionId) {
-            if (!linkedSteam) {
-                alert('Link your Steam account first!');
-                return;
-            }
-            document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
-            document.getElementById(sectionId).style.display = 'block';
-            if (sectionId === 'inventory') loadInventory();
-        }
-
-        function showDepositModal() {
-            document.getElementById('deposit-modal').style.display = 'flex';
-        }
-
-        function closeDepositModal() {
-            document.getElementById('deposit-modal').style.display = 'none';
-        }
-
-        const casePools = {
-            low: [
-                {name: 'P90 | Grim', value: 0.5, img: 'https://via.placeholder.com/200?text=P90+Grim'},
-                {name: 'Glock-18 | Candy Apple', value: 1, img: 'https://via.placeholder.com/200?text=Glock-18+Candy+Apple'},
-                {name: 'Rare Knife', value: 50, img: 'https://via.placeholder.com/200?text=Rare+Knife'}
-            ],
-            mid: [
-                {name: 'AK-47 | Elite Build', value: 2, img: 'https://via.placeholder.com/200?text=AK-47+Elite+Build'},
-                {name: 'AWP | Worm God', value: 3, img: 'https://via.placeholder.com/200?text=AWP+Worm+God'},
-                {name: 'Legendary Skin', value: 100, img: 'https://via.placeholder.com/200?text=Legendary+Skin'}
-            ],
-            high: [
-                {name: 'M4A4 | Howl', value: 3000, img: 'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_m4a1_cu_m4a4_howl_light_large.2d2d2d2d.png'},
-                {name: 'AK-47 | Fire Serpent', value: 1500, img: 'https://via.placeholder.com/200?text=AK-47+Fire+Serpent'},
-                {name: 'AWP | Dragon Lore', value: 5000, img: 'https://steamcdn-a.akamaihd.net/apps/730/icons/econ/default_generated/weapon_awp_cu_awp_dragon_lore_light_large.1d1d1d1d.png'}
-            ]
-        };
-
-        function openCase(caseType) {
-            const costs = { low: 0.99, mid: 4.99, high: 9.99 };
-            const cost = costs[caseType];
-            if (walletBalance < cost) return alert('Insufficient balance!');
-            walletBalance -= cost;
-            updateWallet();
-            setTimeout(() => {
-                const skins = casePools[caseType];
-                const randomIndex = Math.floor(Math.random() * skins.length);
-                const won = skins[randomIndex];
-                document.getElementById('win-skin').innerHTML = `<img src="${won.img}" style="width:100px;"><br>${won.name} ($${won.value})`;
-                document.getElementById('win-modal').style.display = 'flex';
-            }, 2000);
-        }
-
-        function sellWin() {
-            const value = parseFloat(document.getElementById('win-skin').innerText.match(/\$(\d+\.?\d*)/)[1]);
-            walletBalance += value;
-            updateWallet();
-            closeWinModal();
-        }
-
-        function addToInventoryWin() {
-            const skinName = document.getElementById('win-skin').innerText.split(' ($')[0];
-            const skinValue = parseFloat(document.getElementById('win-skin').innerText.match(/\$(\d+\.?\d*)/)[1]);
-            const skinImg = document.getElementById('win-skin').querySelector('img').src;
-            inventory.push({ name: skinName, price: skinValue, img: skinImg });
-            localStorage.setItem('inventory', JSON.stringify(inventory));
-            closeWinModal();
-            loadInventory();
-        }
-
-        function closeWinModal() {
-            document.getElementById('win-modal').style.display = 'none';
-        }
-
-        function createBattle() {
-            if (walletBalance < 10) return alert('Need at least 10 USD to create a battle!');
-            walletBalance -= 10;
-            updateWallet();
-            alert('Battle created! (Pot: 10 USD)');
-        }
-
-        function joinBattle(id) {
-            if (walletBalance < 10) return alert('Need at least 10 USD to join!');
-            walletBalance -= 10;
-            updateWallet();
-            alert(`Joined battle #${id}!`);
-        }
-
-        function buyItem(item) {
-            if (walletBalance < item.price) return alert('Insufficient balance!');
-            walletBalance -= item.price;
-            inventory.push(item);
-            localStorage.setItem('inventory', JSON.stringify(inventory));
-            updateWallet();
-            alert(`Bought ${item.name}! Added to inventory.`);
-            loadInventory();
-        }
-
-        function loadInventory() {
-            const container = document.getElementById('inventory-grid');
-            container.innerHTML = '';
-            inventory.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'inventory-item';
-                div.innerHTML = `<img src="${item.img}" alt="${item.name}"><h3>${item.name}</h3><p>$${item.price.toFixed(2)}</p>`;
-                container.appendChild(div);
-            });
-            document.getElementById('withdraw-btn').disabled = walletBalance < 30;
-        }
-
-        document.getElementById('withdraw-btn').addEventListener('click', () => {
-            const code = Math.random().toString(36).substring(2, 10).toUpperCase();
-            document.getElementById('random-code').innerText = code;
-            document.getElementById('withdraw-modal').style.display = 'flex';
-            inventory = [];
-            localStorage.setItem('inventory', JSON.stringify(inventory));
-            loadInventory();
-        });
-
-        function closeWithdrawModal() {
-            document.getElementById('withdraw-modal').style.display = 'none';
-        }
-
-        function updateWallet() {
-            document.getElementById('wallet-balance').innerText = walletBalance.toFixed(2);
-            localStorage.setItem('walletBalance', walletBalance);
-            if (document.getElementById('inventory').style.display === 'block') loadInventory();
-        }
-
-        // Load Google font
-        const fontLink = document.createElement('link');
-        fontLink.href = 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap';
-        fontLink.rel = 'stylesheet';
-        document.head.appendChild(fontLink);
-
-        // For testing: Simulate login by appending ?openid.identity=https://steamcommunity.com/openid/id/76561197960287930 to URL
-        </script>
+      </section>
+    </main>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('change', function() {
+      document.body.style.background = this.checked ?
+        "radial-gradient(circle at 50% 0%, #090b28 52%, #0c114a 100%)" :
+        "#151f2e";
+    });
+  </script>
 </body>
 </html>
